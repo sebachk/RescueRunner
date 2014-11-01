@@ -1,8 +1,12 @@
 package com.scfactory;
 
+import com.scfactory.characters.Hero;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.Lib;
+import openfl.utils.Timer;
+import openfl.Assets;
+import sys.db.Types.SLongBinary;
 
 /**
  * ...
@@ -13,6 +17,10 @@ class Main extends Sprite
 {
 	var inited:Bool;
 
+	var timer:Timer;
+	var hero:Hero;
+	
+	var last:Int;
 	/* ENTRY POINT */
 	
 	function resize(e) 
@@ -21,11 +29,28 @@ class Main extends Sprite
 		// else (resize or orientation change)
 	}
 	
+	
+	
 	function init() 
 	{
 		if (inited) return;
 		inited = true;
-
+		
+		
+		this.addEventListener(Event.ENTER_FRAME, update);
+		
+		timer =  new Timer(60, 0);
+		
+		timer.start();
+		
+		last = timer.currentCount;
+		
+		hero = new Hero();
+		
+		hero.x = 10;
+		hero.y = stage.height / 2;
+		trace(hero.y+" "+stage.height);
+		stage.addChild(hero);
 		// (your code here)
 		
 		// Stage:
@@ -37,6 +62,12 @@ class Main extends Sprite
 
 	/* SETUP */
 
+	public function update(_) {
+		trace(timer.currentCount);
+		hero.updateLogic(1/60);
+	}
+	
+	
 	public function new() 
 	{
 		super();	

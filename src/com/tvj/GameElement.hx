@@ -18,4 +18,8 @@ class GameElement extends Sprite{
 		}
 	}
 
+	public function addHijo(element:GameElement) {
+		hijos.push(element);
+	}
+	
 }
