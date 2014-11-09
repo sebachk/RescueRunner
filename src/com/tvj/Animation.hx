@@ -12,6 +12,7 @@ import flash.geom.Point;
  */
 class Animation extends GameElement {
 	var t:Tilesheet;
+	
 	var totalTime:Float;
 	var cant:Int;
 	
@@ -31,16 +32,17 @@ class Animation extends GameElement {
 		this.width=w;
 		this.height=h;
 		cant=cols*rows;
-		trace(cant);
+		
 		t.drawTiles(graphics,[0,0,0]);
 		totalTime=0;
 	}
 	
 	override public function updateLogic(time:Float){
 		graphics.clear();
-		totalTime+=time;
+		totalTime+= time;
 		var pos:Int=Math.round(totalTime*10)%cant;	
-		t.drawTiles(graphics,[0,0,pos]);
+		t.drawTiles(graphics, [0, 0, pos]);
+		
 	}
 
 }

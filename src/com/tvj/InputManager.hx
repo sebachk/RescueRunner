@@ -26,12 +26,13 @@ class InputManager {
 		// Suscribo los Eventos para el Teclado
 		stage.addEventListener(flash.events.KeyboardEvent.KEY_UP, onKeyUp);
 		stage.addEventListener(flash.events.KeyboardEvent.KEY_DOWN, onKeyDown);
+		
 	}
 
 	// Cuando se Suelta una Tecla
     private function onKeyUp(event:KeyboardEvent){
     	teclas[event.keyCode]=false;
-    }
+	}
 
 	// Cuando se Presiona una Tecla
     private function onKeyDown(event:KeyboardEvent){

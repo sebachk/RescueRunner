@@ -8,14 +8,16 @@
 	<!-- output -->
 	<app main="com.scfactory.Main" file="RescueRunner" path="bin" />
 	
-	<window background="#000000" fps="60" />
-	<window width="800" height="480" unless="mobile" />
+	
+	<window background="#FF0000" fps="60" />
+	<window width="800" height="600" />
 	<window orientation="landscape" vsync="false" antialiasing="0" if="cpp" />
 	
 	<!-- classpath, haxe libs -->
 	<source path="src" />
 	<haxelib name="openfl" />
 	<haxelib name="actuate" />
+	<haxelib name="haxepunk"/>
 	
 	<!-- assets -->
 	<icon path="assets/openfl.svg" />
