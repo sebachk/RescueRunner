@@ -29,7 +29,7 @@ class Hero extends Entity
 		
 		
 		this.graphic = anim;
-		playing = false;
+		playing = true;
 	}
 	private function animar() {
 		anim.play("normal");
