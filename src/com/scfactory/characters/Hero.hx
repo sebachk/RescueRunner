@@ -2,6 +2,7 @@ package com.scfactory.characters;
 
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Spritemap;
+import com.haxepunk.masks.Hitbox;
 import com.tvj.Animation;
 import com.tvj.GameElement;
 import com.tvj.InputManager;
@@ -24,12 +25,14 @@ class Hero extends Entity
 	{
 		
 		super();
-		var run:Bitmap  = new Bitmap(Assets.getBitmapData("img/runner2.png"));
 		this.anim = anim;
 		
+		this.followCamera = false;
+		this.setHitbox(40, 51);
 		
 		this.graphic = anim;
-		playing = true;
+		playing = false;
+		this.type = "solid";
 	}
 	private function animar() {
 		anim.play("normal");
@@ -40,25 +43,47 @@ class Hero extends Entity
 	{
 		
 		animar();
+		
+		var nuevoX:Float = this.x;
+		var nuevoY:Float = this.y;
 		if (InputManager.getInstance().keyPressed("W")) {
-				y--;
+				nuevoY--;
 		}
 		if (InputManager.getInstance().keyPressed("S")) {
-				y++;
+				nuevoY++;
 		}
 		
 		if (InputManager.getInstance().keyPressed("D")) {
-				x++;
-				y = y;
-		}if (InputManager.getInstance().keyPressed("A")) {
-				x--;
+				nuevoX++;
+		}
+		if (InputManager.getInstance().keyPressed("A")) {
+				nuevoX--;
+		}
+		var e:Entity = this.collide("piso", nuevoX, nuevoY - 1);
+		if (e!=null) {
+			
+			if (this.y > e.y + e.height) {
+				nuevoY++;
+			}
+			if (this.y+this.height-5 < e.y) {
+					nuevoY--;
+			}
+			else if (this.x + this.width <= e.x){
+				nuevoX--;
+			}
+			
+			
 		}
 		
+		this.moveTo(nuevoX, nuevoY);
 		super.update();
 		height = anim.height;
 	}
 	
+	public var ancho(get, null):Int;
 	
-	
+	public function get_ancho():Int {
+		return this.anim.width;
+	}
 	
 }
