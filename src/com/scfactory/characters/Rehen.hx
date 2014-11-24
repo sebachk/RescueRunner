@@ -3,6 +3,7 @@ package com.scfactory.characters;
 import com.haxepunk.Entity;
 import com.haxepunk.Graphic;
 import com.haxepunk.Mask;
+import openfl.Vector;
 
 /**
  * ...
@@ -11,21 +12,62 @@ import com.haxepunk.Mask;
 class Rehen extends Entity
 {
 
-	public var adelante:Hero;
+	var adelante:Entity;
+
+	var XX:Vector<Float>;
+	var YY:Vector<Float>;
 	
-	public function new(adelante:Hero, x:Float=0, y:Float=0, graphic:Graphic=null, mask:Mask=null) 
+	public function new(adelante:Entity, x:Float=0, y:Float=0, graphic:Graphic=null, mask:Mask=null) 
 	{
 		super(x, y, graphic, mask);
 		this.adelante = adelante;
+		this.x = 600;
+		this.y = 200;
+		this.XX = new Vector();
+		this.YY = new Vector();
+		
+		XX.push(x);
+		XX.push(x);
+		XX.push(x);
+		XX.push(x);
+		XX.push(x);
+		XX.push(x);
+		XX.push(x);
+		XX.push(x);
+		XX.push(x);
+		
+		
+		YY.push(y);
+		YY.push(y);
+		YY.push(y);
+		YY.push(y);
+		YY.push(y);
+		YY.push(y);
+		YY.push(y);
+		YY.push(y);
+		YY.push(y);
 	}
 	
 	override public function update():Void 
 	{
 		super.update();
 		
-		this.x=this.adelante.get_x();
+		var xx, yy:Float;
+		XX.reverse();
+		YY.reverse();
 		
-		this.y = adelante.y;
+		xx = XX.pop();
+		yy = YY.pop();
+		
+		XX.reverse();
+		YY.reverse();
+		
+		
+		XX.push(adelante.x);
+		YY.push(adelante.y);
+		
+		moveTo(xx, yy);
+		
 	}
 	
 }
