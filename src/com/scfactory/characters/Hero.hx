@@ -49,6 +49,7 @@ class Hero extends Entity
 		
 		if (InputManager.getInstance().keyPressed("D")) {
 				x++;
+				y = y;
 		}if (InputManager.getInstance().keyPressed("A")) {
 				x--;
 		}
