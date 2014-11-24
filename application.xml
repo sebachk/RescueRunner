@@ -17,11 +17,15 @@
 	<source path="src" />
 	<haxelib name="openfl" />
 	<haxelib name="actuate" />
-	<haxelib name="haxepunk"/>
+	<haxelib name="haxepunk-gui"/>
 	
 	<!-- assets -->
 	<icon path="assets/openfl.svg" />
-	<assets path="assets/img" rename="img" />
+	<assets path="assets/atlas" rename="atlas"  />
+	<assets path="assets/font" rename="font"  />
+	<assets path="assets/gfx" rename="gfx"  />
+	<assets path="assets/graphics" rename="graphics"  />
+	<assets path="assets/img" rename="img"  />
 	
 	<!-- optimize output
 	<haxeflag name="-dce full" /> -->

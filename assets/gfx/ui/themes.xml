@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:b4c5f96d6b3d614e81a55237e531bac2:1/1$ -->
+<!--Format:
+n  => name of the sprite
+x  => sprite x pos in texture
+y  => sprite y pos in texture
+w  => sprite width (may be trimmed)
+h  => sprite height (may be trimmed)
+oX => sprite's x-corner offset (only available if trimmed)
+oY => sprite's y-corner offset (only available if trimmed)
+oW => sprite's original width (only available if trimmed)
+oH => sprite's original height (only available if trimmed)
+r => 'y' only set if sprite is rotated
+-->
+<TextureAtlas imagePath="themes.png" width="120" height="282">
+    <sprite n="blueMagda.png" x="0" y="212" w="120" h="70" oX="0" oY="0" oW="120" oH="72"/>
+    <sprite n="greenMagda.png" x="0" y="142" w="120" h="70" oX="0" oY="0" oW="120" oH="72"/>
+    <sprite n="greyDefault.png" x="0" y="0" w="120" h="72"/>
+    <sprite n="purpleMagda.png" x="0" y="72" w="120" h="70" oX="0" oY="0" oW="120" oH="72"/>
+</TextureAtlas>

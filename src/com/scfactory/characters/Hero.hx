@@ -27,11 +27,12 @@ class Hero extends Entity
 		var run:Bitmap  = new Bitmap(Assets.getBitmapData("img/runner2.png"));
 		this.anim = anim;
 		
+		
 		this.graphic = anim;
 		playing = false;
 	}
 	private function animar() {
-		trace("animado");
+		anim.play("normal");
 		
 	}
 	
@@ -53,8 +54,10 @@ class Hero extends Entity
 		}
 		
 		super.update();
-		
+		height = anim.height;
 	}
+	
+	
 	
 	
 }

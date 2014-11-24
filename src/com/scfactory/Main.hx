@@ -7,12 +7,18 @@ import com.haxepunk.graphics.Image;
 import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.HXP;
 import com.haxepunk.Scene;
+import com.haxepunk.utils.Draw;
 import com.scfactory.characters.Hero;
+import com.scfactory.escenas.LevelScene;
+import com.scfactory.escenas.MenuScene;
+import com.scfactory.escenas.SceneManager;
 import com.scfactory.map.Floor;
 import com.tvj.InputManager;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.Lib;
+import openfl.display.Graphics;
+import openfl.display.SimpleButton;
 import openfl.events.KeyboardEvent;
 import openfl.ui.Keyboard;
 import openfl.utils.Timer;
@@ -33,7 +39,6 @@ class Main extends Engine
 	var mapa:Floor;
 	
 	var last:Int;
-	var game:Scene;
 	
 	/* ENTRY POINT */
 	
@@ -44,18 +49,31 @@ class Main extends Engine
 		// else (resize or orientation change)
 	}
 	
-	
+	private function createScenes() {
+		var scn:Scene = new MenuScene();
+		SceneManager.getInstance().addScene("menu", scn);
+		
+		scn= new LevelScene("img/backgrounds/background1.jpeg", "img/fondo.png");
+		//game.addGraphic(new Image("img/fondo.png"));
+		cast (scn,LevelScene).hero= hero;
+		
+		SceneManager.getInstance().addScene("game", scn);
+	}
 	
 	override public function init() 
 	{
+		
+		
 		if (inited) return;
+		
+		#if debug
+			HXP.console.enable();
+		#end
+		
 		inited = true;
 		
-		
-		//this.addEventListener(Event.ENTER_FRAME, update);
-		
 		var anim:Spritemap = new Spritemap("img/runner2.png",40, 51);
-		anim.add("normal", [0, 1, 2, 3, 4, 5, 6, 7, 8], 60);
+		anim.add("normal", [0, 1, 2, 3, 4, 5, 6, 7, 8], 0);
 		
 		hero = new Hero(anim);
 		mapa = new Floor(50, 350);
@@ -65,19 +83,16 @@ class Main extends Engine
 	
 		trace(stage.width + " " + stage.height);
 		
-		game = new Scene();
-		
-		game.addGraphic(new Image("img/fondo.png"));
-		game.add(hero);
-		
-		game.
-		
-		HXP.scene = game;
-		
+		createScenes();
+		SceneManager.getInstance().changeScene("menu");
 		//mapa.addHijo(hero);
 		//this.addChild(hero);
 		
 		InputManager.getInstance().suscribe(stage);
+		
+		
+		
+		
 		
 		//stage.addEventListener(Event.ENTER_FRAME, update);
 		// (your code here)
@@ -131,4 +146,31 @@ class Main extends Engine
 		Lib.current.stage.scaleMode = flash.display.StageScaleMode.NO_SCALE;
 		Lib.current.addChild(new Main());
 	}
+	
+	
+	
+	public function generarMenu() {
+		//var ms:MenuScene = new MenuScene();
+			//
+		//var but:SimpleButton = new SimpleButton();
+		//but.downState = Draw.rect(0, 0, 50, 20, 0xff0000,0.5);
+		//but.upState = Draw.rect(0, 0, 50, 20, 0xFF0000);
+		//but.overState=Draw.rect(0, 0, 50, 20, 0xFF0000,0,75);
+		//
+		//but.name = "Menu button";
+		//
+		//ms.addButton(but);
+		//
+		//but= new SimpleButton();
+		//but.downState = Draw.rect(0, 0, 50, 20, 0xffff00,0.5);
+		//but.upState = Draw.rect(0, 0, 50, 20, 0xFFff00);
+		//but.overState=Draw.rect(0, 0, 50, 20, 0xFFff00,0,75);
+		//
+		//but.name = "Help button";
+		//
+		//ms.addButton(but);
+		//
+	}
+	
+	
 }
