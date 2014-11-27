@@ -52,6 +52,7 @@ class Rehen extends Entity
 	{
 		super.update();
 		
+		
 		var xx, yy:Float;
 		XX.reverse();
 		YY.reverse();

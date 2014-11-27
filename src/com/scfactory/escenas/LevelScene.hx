@@ -53,7 +53,7 @@ class LevelScene extends Scene
 			var anim:Spritemap = new Spritemap("img/runner2.png",40, 51);
 			anim.add("normal", [0, 1, 2, 3, 4, 5, 6, 7, 8],13);
 			
-			this.add(re);
+			//this.add(re);
 			re.graphic = anim;
 				
 			return this.hero;
