@@ -17,15 +17,12 @@ class Plataforma extends Entity
 
 	public var hero:Hero;
 	
-	public function new(x:Float=0, y:Float=0, graphic:Graphic=null, mask:Mask=null) 
+	public function new(x:Float=0, y:Float=0, graphic:Graphic=null, mask:Mask=null,tipo:String="piso") 
 	{
 		
+		super(x, y, graphic,mask);
 		
-		super(x, y, Image.createRect(40, 40, 0xFF00FF));
-		
-		this.setHitbox(40, 40);
-		
-		this.type = "piso";
+		this.type = tipo;
 		
 	}
 	

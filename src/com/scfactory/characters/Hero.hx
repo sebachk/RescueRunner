@@ -39,40 +39,30 @@ class Hero extends AnimatedCharacter
 	
 	override public function update() 
 	{
-		super.update();
 		
 		var nuevoX:Float = this.x;
 		var nuevoY:Float = this.y;
+		
+		acceleracion.x = 0;
+		
 		if (InputManager.getInstance().keyPressed("W")) {
-				nuevoY--;
+				saltar();
 		}
 		if (InputManager.getInstance().keyPressed("S")) {
-				nuevoY++;
+				//nuevoY++;
 		}
 		
 		if (InputManager.getInstance().keyPressed("D")) {
-				nuevoX++;
+				acceleracion.x = 1;
 		}
 		if (InputManager.getInstance().keyPressed("A")) {
-				nuevoX--;
+				acceleracion.x = -1;
 		}
-		var e:Entity = this.collide("piso", nuevoX, nuevoY - 1);
-		if (e!=null) {
-			
-			if (this.y > e.y + e.height) {
-				nuevoY++;
-			}
-			if (this.y+this.height-5 < e.y) {
-					nuevoY--;
-			}
-			else if (this.x + this.width <= e.x){
-				nuevoX--;
-			}
-			
-			
-		}
+		estado = AnimatedCharacter.ESTADO_SALTANDO;
 		
-		this.moveTo(nuevoX, nuevoY);
+		
+		//this.moveTo(nuevoX, nuevoY);
+		super.update();
 		
 	}
 	

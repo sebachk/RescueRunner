@@ -135,6 +135,7 @@ class Main extends Engine
 		#else
 		init();
 		#end
+		
 	}
 	
 	public static function main() 
