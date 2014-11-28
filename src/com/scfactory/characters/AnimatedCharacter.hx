@@ -39,11 +39,7 @@ class AnimatedCharacter extends Entity
 		
 		anim = new TiledSpritemap(tile, fw, fh, w, h, cb);
 		
-		anim.active = true;
 		
-		anim.visible = true;
-		
-		trace(anim.frameCount);
 		this.graphic = anim;
 		
 		
@@ -61,31 +57,6 @@ class AnimatedCharacter extends Entity
 		height = anim.height;
 		
 		
-		if (estado == ESTADO_SALTANDO) {
-				velocidad.y += GRAVITY;
-			
-			//if (this.y > 300) {//piso
-				//this.y = 300;
-				//piso();
-			//}
-		}
-		
-		velocidad.x += acceleracion.x;
-		
-		
-		
-		if (Math.abs(velocidad.x) > MAXVEL) {
-				velocidad.x = MAXVEL * HXP.sign(velocidad.x);
-		}
-		if(velocidad.x>0){
-			velocidad.x = Math.max(velocidad.x - DRAG, 0);
-			anim.flipped = false;
-		}if(velocidad.x<0) {
-			velocidad.x = Math.min(velocidad.x + DRAG, 0);
-			anim.flipped = true;
-		}
-		
-		this.moveBy(velocidad.x, velocidad.y,["piso","floor"]);
 
 	}
 	
@@ -95,37 +66,6 @@ class AnimatedCharacter extends Entity
 	}
 	
 	
-	public function saltar() {
-		if(estado!=ESTADO_SALTANDO){
-			velocidad.y = -4;
-			estado = ESTADO_SALTANDO;
-		}
-		
-	}
 	
-	public function piso() {
-		if(estado!=ESTADO_CORRIENDO){
-			velocidad.y = 0;
-			estado = ESTADO_CORRIENDO;
-		}
-	}
-	
-	override public function moveCollideY(e:Entity):Bool 
-	{
-		var ret:Bool = true; super.moveCollideY(e);
-		//if (ret)
-			piso();
-		
-			
-		return ret;
-	}
-	
-	
-	override public function moveCollideX(e:Entity):Bool 
-	{
-		var ret=super.moveCollideX(e);
-		
-		return (e.type == "piso");
-		
-	}
+
 }

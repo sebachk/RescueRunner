@@ -8,10 +8,13 @@ import com.haxepunk.HXP;
 import com.haxepunk.Scene;
 import com.scfactory.characters.Hero;
 import com.scfactory.characters.Rehen;
+import com.scfactory.elementos.ConfiguracionNivel;
 import com.scfactory.elementos.ElementManager;
 import com.scfactory.elementos.Superficie;
 import com.scfactory.elementos.Plataforma;
 import com.scfactory.elementos.Superficie;
+import com.scfactory.enemigo.Faller;
+import openfl._v2.geom.Point;
 
 /**
  * ...
@@ -22,10 +25,14 @@ class LevelScene extends Scene
 
 	private var background: Backdrop;
 	private var floor:Backdrop;
+	private var conf:ConfiguracionNivel;
 	
 	//Piso
 	
 	//Frente
+	
+	
+	
 	
 	public var hero(default,set):Hero;
 	
@@ -43,45 +50,37 @@ class LevelScene extends Scene
 		this.floor.y = background.height - 3;
 		
 		
+		conf = new ConfiguracionNivel();
+		loadPlataformas();
 	}
 	
-	function crearPlataformas() {
-		var t:Plataforma = new Plataforma(800, 300, Image.createRect(100, 40, 0xFF00FF));
-			t.setHitbox(100, 40);
-			t.hero = hero;
-			this.add(t);
-			
-			t= new Plataforma(900, 290, Image.createRect(100, 40, 0xFF00FF));
-			t.setHitbox(100, 40);
-			t.hero = hero;
-			this.add(t);
-			
-			t= new Plataforma(1050,100 , Image.createRect(100, 40, 0xFF00FF));
-			t.setHitbox(100, 40);
-			t.hero = hero;
-			this.add(t);
-			
-			t= new Plataforma(1200, 500, Image.createRect(100, 40, 0xFF00FF));
-			t.setHitbox(100, 40);
-			t.hero = hero;
-			this.add(t);
-			
-			t= new Plataforma(1350, 450, Image.createRect(100, 40, 0xFF00FF));
-			t.setHitbox(100, 40);
-			t.hero = hero;
-			this.add(t);
-			
+	private function loadPlataformas() {
+		conf.add_plataforma(100, 300);
+		conf.add_plataforma(300, 250);
+		conf.add_plataforma(500, 200);
+		conf.add_plataforma(700, 225);
+		conf.add_plataforma(900, 250);
+		conf.add_plataforma(1100, 275);
+		conf.add_plataforma(1300, 300);
+		conf.add_plataforma(1500, 250);
+		conf.add_plataforma(1700, 200);
+		conf.add_plataforma(1900, 350);
+		conf.add_plataforma(2100, 300);
+		conf.add_plataforma(2300, 250);
+		conf.add_plataforma(2500, 200);
+		conf.add_plataforma(2700, 100);
+		conf.add_plataforma(2900, 150);
+		conf.add_plataforma(3100, 300);
+		conf.add_plataforma(3300, 350);
+		conf.add_plataforma(3500, 300);
 	}
 	
 	public function set_hero(hero:Hero):Hero {
 			this.hero = hero;
-			this.hero.y = 249;
-			this.hero.x = 300;
+			this.hero.y = 100;
+			this.hero.x = 100;
 			this.add(hero);
 			
-			//crearPlataformas();
-			for(i in 0...ElementManager.get_Instance().platPool.length)
-				this.add(ElementManager.get_Instance().platPool.pop());
 			
 			var t:Superficie = new Superficie(200, 360, Image.createRect(300, HXP.height-200, 0x0000FF),null,"floor");
 			//t.setHitbox(interface., HXP.height-200);
@@ -113,8 +112,36 @@ class LevelScene extends Scene
 			hero.y = floor.y-hero.height/2 ;
 		}
 		
+		if (Math.random() > 0.97) {
+			agregarFaller();
+		}
 		
+		agregarPlat();
 		
+	}
+	
+	private function agregarFaller() {
+		var f:Faller = ElementManager.get_Instance().useFaller();
+		if(f!=null){
+			f.x = this.camera.x + HXP.width + 50;
+			f.y = -5;
+			
+			this.add(f);
+		}
+	}
+	
+	private function agregarPlat() {
+		var x:Float = conf.x_Actual();
+		if(x!=null){
+			if (x < this.camera.x + HXP.width + 100) {
+				var p:Point = conf.get_Next();
+				
+				this.add(ElementManager.get_Instance().usePlataforma(p.x, p.y));
+			}
+		}
+		else {
+			conf.resetPosiciones(this.camera.x + HXP.width + 50);
+		}
 	}
 	
 }
