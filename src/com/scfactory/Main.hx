@@ -53,7 +53,7 @@ class Main extends Engine
 		var scn:Scene = new MenuScene();
 		SceneManager.getInstance().addScene("menu", scn);
 		
-		scn= new LevelScene("img/backgrounds/background1.jpeg", "img/fondo.png");
+		scn= new LevelScene("img/backgrounds/fondo_espacio_01.png", "img/backgrounds/fondo_05.png");
 		//game.addGraphic(new Image("img/fondo.png"));
 		cast (scn,LevelScene).hero= hero;
 		
@@ -74,7 +74,7 @@ class Main extends Engine
 		
 		
 		hero = new Hero("img/runner2.png");
-		mapa = new Floor(50, 350);
+		//mapa = new Floor(50, 350);
 	
 		hero.x = stage.width/2;
 		hero.y = stage.height / 2;

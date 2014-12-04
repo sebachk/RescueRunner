@@ -4,9 +4,11 @@ import com.haxepunk.Entity;
 import com.haxepunk.Graphic;
 import com.haxepunk.graphics.atlas.TextureAtlas;
 import com.haxepunk.graphics.atlas.TileAtlas;
+import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.graphics.TiledSpritemap;
 import com.haxepunk.HXP;
 import com.haxepunk.Mask;
+import com.scfactory.escenas.LevelScene;
 import openfl._v2.geom.Point;
 
 /**
@@ -16,6 +18,14 @@ import openfl._v2.geom.Point;
 class AnimatedCharacter extends Entity
 {
 	var anim:TiledSpritemap;
+	
+	var lScene:LevelScene;
+
+	static inline var NAME_HERO:String = "hero";
+	static inline var NAME_REHEN:String = "rehen";
+	
+	
+	
 	
 	
 	//Movimiento
@@ -27,6 +37,12 @@ class AnimatedCharacter extends Entity
 	static var ESTADO_CORRIENDO:String = "CORRIENDO";
 	static var ESTADO_SALTANDO:String = "SALTANDO";
 	
+	static var ESTADO_R_ESPERANDO:String = "ESPERANDO";
+	static var ESTADO_R_SIGUIENDO:String = "SIGUIENDO";
+	
+	static var ESTADO_MUERTO:String = "MUERTO";
+	
+	
 	static inline var GRAVITY:Float = 0.1;
 	static inline var DRAG:Float = 0.2;
 	
@@ -36,6 +52,8 @@ class AnimatedCharacter extends Entity
 	{
 		
 		super(x, y, graphic, mask);
+		
+		
 		
 		anim = new TiledSpritemap(tile, fw, fh, w, h, cb);
 		
@@ -47,15 +65,17 @@ class AnimatedCharacter extends Entity
 		acceleracion = new Point();
 		
 		estado = ESTADO_SALTANDO;
+		
 	}
 	
 	override public function update():Void 
 	{
-		super.update();
-		this.animar();
-		
-		height = anim.height;
-		
+		if(estado!=ESTADO_MUERTO){
+			super.update();
+			this.animar();
+			
+			height = anim.height;
+		}
 		
 
 	}
@@ -66,6 +86,19 @@ class AnimatedCharacter extends Entity
 	}
 	
 	
+	public function morir() {
+		if(estado!=ESTADO_R_ESPERANDO){
+			estado = ESTADO_MUERTO;
+		
+			cast(this.scene, LevelScene).MatarCharacter(this);
+		}
+	}
 	
+	override public function added():Void 
+	{
+		super.added();
+		
+		this.lScene = cast(this.scene, LevelScene);
+	}
 
 }

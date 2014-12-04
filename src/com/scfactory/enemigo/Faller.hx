@@ -2,6 +2,7 @@ package com.scfactory.enemigo;
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.TiledSpritemap;
 import com.scfactory.characters.AnimatedCharacter;
+import com.scfactory.const.ConstantManager;
 import com.scfactory.elementos.ElementManager;
 import openfl.geom.Point;
 
@@ -19,7 +20,7 @@ class Faller extends AnimatedCharacter
 	public function new() 
 	{
 		super("img/faller.png", 150, 261, 150, 261, null);
-		cayendo = true;
+		cayendo = Math.random()>0.5;
 		velocidad = new Point(0, 5);
 		
 		this.anim.scale = 0.2;
@@ -41,10 +42,10 @@ class Faller extends AnimatedCharacter
 		
 
 		
-		moveBy(0, mov, ["floor"]);
+		moveBy(0, mov, ["floor","solid"]);
 		
 		if (this.y <= 0) {
-			trace("techo");
+			
 			cayendo = true;
 		}
 		
@@ -58,6 +59,10 @@ class Faller extends AnimatedCharacter
 	{
 		
 		cayendo = false;
+		
+		if (e.type == ConstantManager.TIPO_CHARACTER) {
+			cast(e, AnimatedCharacter).morir();
+		}
 		
 		return super.moveCollideY(e);
 		

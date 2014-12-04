@@ -30,6 +30,7 @@ class Hero extends AnimatedCharacter
 		super(anim,40,51,40,51,null,x, y, graphic, mask);
 		this.anim.add("normal", [0, 1, 2, 3, 4, 5, 6, 7, 8],13);
 		
+		trace("cree un: " + this.toString());
 		this.setHitbox(40, 51);
 		
 		//this.graphic = this.anim;
@@ -55,10 +56,10 @@ class Hero extends AnimatedCharacter
 		}
 		
 		if (InputManager.getInstance().keyPressed("D")) {
-				acceleracion.x = 1;
+				acceleracion.x = 2;
 		}
 		if (InputManager.getInstance().keyPressed("A")) {
-				acceleracion.x = -1;
+				acceleracion.x = -2;
 		}
 		estado = AnimatedCharacter.ESTADO_SALTANDO;
 		
@@ -82,14 +83,14 @@ class Hero extends AnimatedCharacter
 				velocidad.x = AnimatedCharacter.MAXVEL * HXP.sign(velocidad.x);
 		}
 		if(velocidad.x>0){
-			velocidad.x = Math.max(velocidad.x - AnimatedCharacter.DRAG, 0);
+			velocidad.x = Math.max(velocidad.x - AnimatedCharacter.DRAG, 2);
 			anim.flipped = false;
 		}if(velocidad.x<0) {
-			velocidad.x = Math.min(velocidad.x + AnimatedCharacter.DRAG, 0);
+			velocidad.x = Math.min(velocidad.x + AnimatedCharacter.DRAG, -2);
 			anim.flipped = true;
 		}
 		
-		this.moveBy(velocidad.x, velocidad.y,[ConstantManager.TIPO_PISO,ConstantManager.TIPO_FLOOR]);
+		this.moveBy(velocidad.x, velocidad.y,[ConstantManager.TIPO_PISO,ConstantManager.TIPO_FLOOR,ConstantManager.TIPO_CHARACTER]);
 		super.update();
 		
 	}
@@ -102,7 +103,7 @@ class Hero extends AnimatedCharacter
 	
 	public function saltar() {
 		if(estado!=AnimatedCharacter.ESTADO_SALTANDO){
-			velocidad.y = -4;
+			velocidad.y = -5;
 			estado = AnimatedCharacter.ESTADO_SALTANDO;
 		}
 		
@@ -119,9 +120,13 @@ class Hero extends AnimatedCharacter
 		
 	override public function moveCollideY(e:Entity):Bool 
 	{
-		var ret:Bool = true; super.moveCollideY(e);
 		//if (ret)
-			piso();
+		if (e.type == ConstantManager.TIPO_CHARACTER) {
+			return false;
+		}
+		var ret:Bool = true; super.moveCollideY(e);
+		
+		piso();
 		
 			
 		return ret;
@@ -130,9 +135,16 @@ class Hero extends AnimatedCharacter
 	
 	override public function moveCollideX(e:Entity):Bool 
 	{
+		
+		if (e.type == ConstantManager.TIPO_CHARACTER) {
+			var ch:Rehen = cast(e, Rehen);
+			if (ch.estado == AnimatedCharacter.ESTADO_R_ESPERANDO) {
+				ch.rescatar();
+			}
+			return false;
+		}
 		return super.moveCollideX(e);
 	
-		
 	}
 	
 	
