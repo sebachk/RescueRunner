@@ -9,6 +9,7 @@ import com.haxepunk.HXP;
 import com.haxepunk.Scene;
 import com.haxepunk.utils.Draw;
 import com.scfactory.characters.Hero;
+import com.scfactory.escenas.GameScene;
 import com.scfactory.escenas.LevelScene;
 import com.scfactory.escenas.MenuScene;
 import com.scfactory.escenas.SceneManager;
@@ -50,7 +51,7 @@ class Main extends Engine
 	}
 	
 	private function createScenes() {
-		var scn:Scene = new MenuScene();
+		var scn:GameScene = new MenuScene();
 		SceneManager.getInstance().addScene("menu", scn);
 		
 		scn= new LevelScene("img/backgrounds/fondo_espacio_01.png", "img/backgrounds/fondo_05.png");

@@ -12,8 +12,8 @@ import motion.Actuate;
 class SceneManager
 {
 
-	var current:Scene;
-	var escenas:Map<String,Scene>;
+	var current:GameScene;
+	var escenas:Map<String,GameScene>;
 	
 	
 	private static var instance:SceneManager;
@@ -26,12 +26,12 @@ class SceneManager
 	}
 	public function new() 
 	{
-		this.escenas = new Map<String,Scene>();
+		this.escenas = new Map<String,GameScene>();
 		
 		
 	}
 	
-	public function addScene(name:String, escena:Scene):Bool {
+	public function addScene(name:String, escena:GameScene):Bool {
 		var nueva:Bool = true;
 		if (escenas.get(name) != null) {
 			nueva = false;
@@ -43,14 +43,22 @@ class SceneManager
 	}
 	
 	public function changeScene(name:String) {
-		var aux:Scene  = escenas.get(name);
+		var aux:GameScene  = escenas.get(name);
 		if (aux == null) return;
-		current = aux;
+		if(current!=null){
+			current.onEndScene();
+			current = aux;		
+		}else {
+			current = aux;	
+			putScene();
+		}
 		
-		Actuate.tween(HXP.scene.sprite,0.2,{alpha:0}).onComplete(putScene);
 	}
 	
 	public function putScene() {
+		//HXP.scene.sprite.alpha = 1;
+		//trace(current);
+		
 		HXP.scene = current;
 	}
 }

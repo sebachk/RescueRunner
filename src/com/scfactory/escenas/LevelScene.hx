@@ -4,32 +4,35 @@ import com.haxepunk.Graphic.ImageType;
 import com.haxepunk.graphics.Backdrop;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.graphics.Spritemap;
+import com.haxepunk.gui.Button;
 import com.haxepunk.HXP;
 import com.haxepunk.Scene;
 import com.scfactory.characters.AnimatedCharacter;
 import com.scfactory.characters.Hero;
 import com.scfactory.characters.Rehen;
+import com.scfactory.elementos.BackGround;
 import com.scfactory.elementos.ConfiguracionNivel;
 import com.scfactory.elementos.ElementManager;
 import com.scfactory.elementos.Superficie;
 import com.scfactory.elementos.Plataforma;
 import com.scfactory.elementos.Superficie;
 import com.scfactory.enemigo.Faller;
+import com.tvj.InputManager;
 import openfl._v2.geom.Point;
 
 /**
  * ...
  * @author Sebachk
  */
-class LevelScene extends Scene
+class LevelScene extends GameScene
 {
 
-	private var background: Backdrop;
-	private var floor:Backdrop;
+	private var background: BackGround;
+	
 	private var conf:ConfiguracionNivel;
 	
 	private var characters:Array<AnimatedCharacter>;
-	
+	var bExit:Button ;
 	//Piso
 	
 	//Frente
@@ -43,18 +46,32 @@ class LevelScene extends Scene
 	{
 		super();
 	
+		
 		characters = new Array<AnimatedCharacter>();
-		background = new Backdrop(backgroundImage, true, false);
-		this.addGraphic(background);
 		
-		this.floor = new Backdrop(floor, true, false);
-		this.addGraphic(this.floor);
+		bExit= new Button("Volver al Menu");
+		bExit.x = 150;
+		bExit.y = 100;
+		bExit.addEventListener(Button.CLICKED, exit);
+		this.add(bExit);
 		
-		this.floor.y = background.height-this.floor.height;
+		
+		
+		bExit.followCamera = true;
+		bExit.layer = 0;
 		
 		
 		conf = new ConfiguracionNivel();
 		loadPlataformas();
+		
+		background = new BackGround(backgroundImage, floor);
+		this.add(background);
+		background.layer = 15;
+		
+	}
+	
+	function exit(_) {
+		SceneManager.getInstance().changeScene("menu");
 	}
 	
 	private function loadPlataformas() {
@@ -79,8 +96,10 @@ class LevelScene extends Scene
 	}
 	
 	public function set_hero(hero:Hero):Hero {
+			//this.bringToFront(bExit);
+		
 			this.hero = hero;
-			this.hero.y = 100;
+			this.hero.y = 150;
 			this.hero.x = 100;
 			this.add(hero);
 			this.characters.push(hero);
@@ -107,9 +126,13 @@ class LevelScene extends Scene
 	{
 		super.update();
 		
+		if (InputManager.getInstance().keyPressed("Q")) {
+			trace(hero.layer + "..." + bExit.layer + "...");
+		}
+		
+		
 		if(estado=="jugando"){
-			this.background.x += 2.5;
-			this.floor.x += 1.5;
+			
 			this.camera.x += 3;
 			
 			
@@ -212,7 +235,12 @@ class LevelScene extends Scene
 		}
 		
 		
-		trace("Tamanio:" + characters.length);
+	}
+	
+	override public function begin() 
+	{
+		super.begin();
+		this.sprite.alpha = 1;
 	}
 	
 }
