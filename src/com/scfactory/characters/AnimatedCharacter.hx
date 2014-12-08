@@ -9,6 +9,7 @@ import com.haxepunk.graphics.TiledSpritemap;
 import com.haxepunk.HXP;
 import com.haxepunk.Mask;
 import com.scfactory.escenas.LevelScene;
+import com.scfactory.estados.EstadoCharacter;
 import openfl._v2.geom.Point;
 
 /**
@@ -33,6 +34,7 @@ class AnimatedCharacter extends Entity
 	var velocidad:Point;
 	var acceleracion:Point;
 	var estado:String;
+	var state:EstadoCharacter;
 	
 	static var ESTADO_CORRIENDO:String = "CORRIENDO";
 	static var ESTADO_SALTANDO:String = "SALTANDO";
@@ -52,7 +54,7 @@ class AnimatedCharacter extends Entity
 	{
 		
 		super(x, y, graphic, mask);
-		
+		state = new EstadoCharacter();
 		
 		
 		anim = new TiledSpritemap(tile, fw, fh, w, h, cb);
@@ -65,12 +67,13 @@ class AnimatedCharacter extends Entity
 		acceleracion = new Point();
 		
 		estado = ESTADO_SALTANDO;
+		state.actual = EstadoCharacter.ESTADO_SALTANDO;
 		
 	}
 	
 	override public function update():Void 
 	{
-		if(estado!=ESTADO_MUERTO){
+		if(!state.isMuerto()){
 			super.update();
 			this.animar();
 			
@@ -87,9 +90,9 @@ class AnimatedCharacter extends Entity
 	
 	
 	public function morir() {
-		if(estado!=ESTADO_R_ESPERANDO){
-			estado = ESTADO_MUERTO;
-		
+		if(!state.esperando()){
+			state.actual = EstadoCharacter.ESTADO_MUERTO;
+			//estado = ESTADO_MUERTO;
 			cast(this.scene, LevelScene).MatarCharacter(this);
 		}
 	}

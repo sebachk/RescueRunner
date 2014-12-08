@@ -54,7 +54,7 @@ class Main extends Engine
 		var scn:GameScene = new MenuScene();
 		SceneManager.getInstance().addScene("menu", scn);
 		
-		scn= new LevelScene("img/backgrounds/fondo_espacio_01.png", "img/backgrounds/fondo_05.png");
+		scn= new LevelScene("img/scene_layer/capa_01.png", "img/backgrounds/fondo_05.png");
 		//game.addGraphic(new Image("img/fondo.png"));
 		cast (scn,LevelScene).hero= hero;
 		

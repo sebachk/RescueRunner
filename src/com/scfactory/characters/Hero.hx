@@ -8,6 +8,7 @@ import com.haxepunk.HXP;
 import com.haxepunk.Mask;
 import com.haxepunk.masks.Hitbox;
 import com.scfactory.const.ConstantManager;
+import com.scfactory.estados.EstadoCharacter;
 import com.tvj.Animation;
 import com.tvj.GameElement;
 import com.tvj.InputManager;
@@ -62,13 +63,14 @@ class Hero extends AnimatedCharacter
 				acceleracion.x = -2;
 		}
 		estado = AnimatedCharacter.ESTADO_SALTANDO;
-		
+		state.actual = EstadoCharacter.ESTADO_SALTANDO;
 		
 		//this.moveTo(nuevoX, nuevoY);
 		
-		if (estado == AnimatedCharacter.ESTADO_SALTANDO) {
-				velocidad.y += AnimatedCharacter.GRAVITY;
-			
+		if (state.enAire()) {
+			velocidad.y += AnimatedCharacter.GRAVITY;
+			if (velocidad.y > 0)
+				state.actual = EstadoCharacter.ESTADO_CAYENDO;
 			//if (this.y > 300) {//piso
 				//this.y = 300;
 				//piso();
@@ -102,17 +104,19 @@ class Hero extends AnimatedCharacter
 	}
 	
 	public function saltar() {
-		if(estado!=AnimatedCharacter.ESTADO_SALTANDO){
+		if(!state.enAire()){
 			velocidad.y = -5;
-			estado = AnimatedCharacter.ESTADO_SALTANDO;
+			state.actual = EstadoCharacter.ESTADO_SALTANDO;
+			
 		}
 		
 	}
 	
 	public function piso() {
-		if(estado!=AnimatedCharacter.ESTADO_CORRIENDO){
+		if(state.puedeTocarPiso()){
 			velocidad.y = 0;
 			estado = AnimatedCharacter.ESTADO_CORRIENDO;
+			state.actual = EstadoCharacter.ESTADO_CORRIENDO;
 		}
 	}
 	
@@ -138,7 +142,7 @@ class Hero extends AnimatedCharacter
 		
 		if (e.type == ConstantManager.TIPO_CHARACTER) {
 			var ch:Rehen = cast(e, Rehen);
-			if (ch.estado == AnimatedCharacter.ESTADO_R_ESPERANDO) {
+			if (ch.state.actual == EstadoCharacter.ESTADO_R_EPERANDO) {
 				ch.rescatar();
 			}
 			return false;

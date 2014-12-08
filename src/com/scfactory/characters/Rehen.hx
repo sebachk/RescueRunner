@@ -4,6 +4,7 @@ import com.haxepunk.Entity;
 import com.haxepunk.Graphic;
 import com.haxepunk.Mask;
 import com.scfactory.const.ConstantManager;
+import com.scfactory.estados.EstadoCharacter;
 import openfl.Vector;
 
 /**
@@ -24,6 +25,7 @@ class Rehen extends AnimatedCharacter
 		this.anim.add("normal", [0, 1, 2, 3, 4, 5, 6, 7, 8],13);
 		
 		this.estado = AnimatedCharacter.ESTADO_R_ESPERANDO;
+		this.state.actual = EstadoCharacter.ESTADO_R_EPERANDO;
 		this.setHitbox(40, 50);
 		this.adelante = adelante;
 		
@@ -39,8 +41,8 @@ class Rehen extends AnimatedCharacter
 	override public function update():Void 
 	{
 		super.update();
-		if (estado == AnimatedCharacter.ESTADO_R_ESPERANDO) {
-			moveBy(0, 10, [ConstantManager.TIPO_FLOOR, ConstantManager.TIPO_PISO]);
+		if (state.actual ==EstadoCharacter.ESTADO_R_EPERANDO) {
+			moveBy(0, 30, [ConstantManager.TIPO_FLOOR, ConstantManager.TIPO_PISO]);
 		}
 		else{
 			var xx, yy:Float;
@@ -68,14 +70,28 @@ class Rehen extends AnimatedCharacter
 					xx++;
 			}
 			
+			if (yy > this.y) {
+				while (yy - this.y > 6) {
+					yy--;
+				}
+			}
+			else {
+				while (yy - this.y < -6) {
+					yy++;
+				}
+			}
+			
 			moveTo(xx, yy);
 		}
+		
+		
+		
 		
 	}
 	
 	override public function moveCollideY(e:Entity):Bool 
 	{
-		if (estado == AnimatedCharacter.ESTADO_R_ESPERANDO) {
+		if (state.actual == EstadoCharacter.ESTADO_R_EPERANDO) {
 			return true;
 		}
 		return false;
@@ -88,6 +104,7 @@ class Rehen extends AnimatedCharacter
 	
 	public function rescatar() {
 		this.estado = AnimatedCharacter.ESTADO_R_SIGUIENDO;
+		state.actual = EstadoCharacter.ESTADO_R_SIGUIENDO;
 		anim.play("rescatando");
 		if (this.lScene != null) {
 			

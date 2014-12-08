@@ -32,6 +32,11 @@ class LevelScene extends GameScene
 	private var conf:ConfiguracionNivel;
 	
 	private var characters:Array<AnimatedCharacter>;
+	
+	
+	private var rehenesEnEscena:Array<Rehen>;
+	
+	private static inline var MAX_REHENES:Int = 7;
 	var bExit:Button ;
 	//Piso
 	
@@ -46,7 +51,7 @@ class LevelScene extends GameScene
 	{
 		super();
 	
-		
+		rehenesEnEscena = new Array<Rehen>();
 		characters = new Array<AnimatedCharacter>();
 		
 		bExit= new Button("Volver al Menu");
@@ -153,6 +158,7 @@ class LevelScene extends GameScene
 			}
 			
 			agregarPlat();
+			checkRehenes();
 		}
 	}
 	
@@ -168,9 +174,11 @@ class LevelScene extends GameScene
 	}
 	
 	private function agregarRehen() {
-		var r:Rehen = new Rehen(null,HXP.camera.x + HXP.width * 2,Math.random() * (HXP.height / 2));
-
-		this.add(r);
+		if(rehenesEnEscena.length<MAX_REHENES){
+			var r:Rehen = new Rehen(null,HXP.camera.x + HXP.width +30,Math.random() * HXP.height / 2);
+			this.add(r);
+			rehenesEnEscena.push(r);
+		}
 	}
 	
 	private function agregarPlat() {
@@ -208,6 +216,7 @@ class LevelScene extends GameScene
 				this.remove(it.next());
 			}
 			estado = "perdio";
+			
 			characters = characters.splice(0, 0);
 		}
 		else {
@@ -220,6 +229,7 @@ class LevelScene extends GameScene
 			}
 			characters.remove(ch);
 			this.remove(ch);
+			rehenesEnEscena.remove(cast(ch,Rehen));
 			//it.next();
 			//;
 			//while (it.hasNext()) {
@@ -234,6 +244,17 @@ class LevelScene extends GameScene
 			//}
 		}
 		
+		
+	}
+	
+	public function checkRehenes() {
+		for (r in rehenesEnEscena) {
+			if (r.x + 200 < this.camera.x) {
+				trace(rehenesEnEscena.length);		
+				rehenesEnEscena.remove(r);
+				this.remove(r);
+			}
+		}
 		
 	}
 	
