@@ -31,13 +31,14 @@ class Hero extends AnimatedCharacter
 		super(anim,40,51,40,51,null,x, y, graphic, mask);
 		this.anim.add("normal", [0, 1, 2, 3, 4, 5, 6, 7, 8],13);
 		
-		trace("cree un: " + this.toString());
+		
 		this.setHitbox(40, 51);
 		
 		//this.graphic = this.anim;
 		
-		playing = false;
+		
 		this.type = "solid";
+		reset();
 	}
 	
 	
@@ -118,6 +119,10 @@ class Hero extends AnimatedCharacter
 			estado = AnimatedCharacter.ESTADO_CORRIENDO;
 			state.actual = EstadoCharacter.ESTADO_CORRIENDO;
 		}
+		else{
+			estado = EstadoCharacter.ESTADO_CAYENDO;
+			velocidad.y = 0;
+		}
 	}
 	
 	
@@ -149,6 +154,12 @@ class Hero extends AnimatedCharacter
 		}
 		return super.moveCollideX(e);
 	
+	}
+	
+	public function reset() {
+		velocidad.x = 0;
+		velocidad.y = 0;
+		
 	}
 	
 	

@@ -23,6 +23,9 @@ class Plataforma extends Entity
 		
 		super(x, y, graphic,mask);
 		
+		if (mask == null) {
+			setHitbox(this.width, this.height);
+		}
 		this.type = tipo;
 		
 	}
@@ -32,7 +35,7 @@ class Plataforma extends Entity
 		super.update();
 		if(type==ConstantManager.TIPO_PISO)
 			if (this.x + this.width < this._camera.x) {
-			
+				
 				ElementManager.get_Instance().removerPlataforma(this);
 			}
 	}

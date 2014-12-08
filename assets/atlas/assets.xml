@@ -11,9 +11,11 @@ oW => sprite's original width (only available if trimmed)
 oH => sprite's original height (only available if trimmed)
 r => 'y' only set if sprite is rotated
 -->
-<TextureAtlas imagePath="gfx/ui/themes.png" width="120" height="288">
+<TextureAtlas imagePath="img/Skins/themes.png" width="120" height="288">
 	<sprite n="gfx/ui/greyDefault.png" x="0" y="0" w="120" h="72" />
 	<sprite n="gfx/ui/blueMagda.png" x="0" y="72" w="120" h="72" />
 	<sprite n="gfx/ui/greenMagda.png" x="0" y="144" w="120" h="72" />
 	<sprite n="gfx/ui/purpleMagda.png" x="0" y="216" w="120" h="72" />
+	<sprite n="img/Skins/GameSkin.png" x="0" y="216" w="120" h="72" />
+	
 </TextureAtlas>

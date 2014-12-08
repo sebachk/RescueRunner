@@ -56,7 +56,6 @@ class AnimatedCharacter extends Entity
 		super(x, y, graphic, mask);
 		state = new EstadoCharacter();
 		
-		
 		anim = new TiledSpritemap(tile, fw, fh, w, h, cb);
 		
 		
@@ -85,16 +84,17 @@ class AnimatedCharacter extends Entity
 	
 	private function animar() {
 		anim.play("normal");
-		
 	}
 	
 	
-	public function morir() {
-		if(!state.esperando()){
-			state.actual = EstadoCharacter.ESTADO_MUERTO;
-			//estado = ESTADO_MUERTO;
-			cast(this.scene, LevelScene).MatarCharacter(this);
-		}
+	public function morir():Bool {
+		
+		state.actual = EstadoCharacter.ESTADO_MUERTO;
+		//estado = ESTADO_MUERTO;
+		cast(this.scene, LevelScene).MatarCharacter(this);
+		return true;
+		
+		
 	}
 	
 	override public function added():Void 

@@ -10,7 +10,7 @@ import openfl.geom.Point;
  * ...
  * @author Sebachk
  */
-class Faller extends AnimatedCharacter
+class Faller extends Enemigo
 {
 
 	private var cayendo:Bool;
@@ -21,7 +21,7 @@ class Faller extends AnimatedCharacter
 	{
 		super("img/faller.png", 150, 261, 150, 261, null);
 		cayendo = Math.random()>0.5;
-		velocidad = new Point(0, 5);
+		velocidad = new Point(0, 4);
 		
 		this.anim.scale = 0.2;
 		this.anim.scale = 0.2;
@@ -40,28 +40,26 @@ class Faller extends AnimatedCharacter
 			mov = -mov;
 		}
 		
-
-		
-		moveBy(0, mov, ["floor","solid"]);
+		moveBy(0, mov, [ConstantManager.TIPO_FLOOR,ConstantManager.TIPO_CHARACTER,ConstantManager.TIPO_PISO]);
 		
 		if (this.y <= 0) {
 			
 			cayendo = true;
 		}
 		
-		if (this.x < this._camera.x) {
-			ElementManager.get_Instance().killFaller(this);
-		}
+		super.update();
+		
+
 	}
 	
 	
 	override public function moveCollideY(e:Entity):Bool 
 	{
 		
-		cayendo = false;
+		cayendo = !cayendo;
 		
 		if (e.type == ConstantManager.TIPO_CHARACTER) {
-			cast(e, AnimatedCharacter).morir();
+			collideCharacter(cast(e, AnimatedCharacter));
 		}
 		
 		return super.moveCollideY(e);

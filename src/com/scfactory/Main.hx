@@ -74,13 +74,8 @@ class Main extends Engine
 		inited = true;
 		
 		
-		hero = new Hero("img/runner2.png");
 		//mapa = new Floor(50, 350);
 	
-		hero.x = stage.width/2;
-		hero.y = stage.height / 2;
-	
-		trace(stage.width + " " + stage.height);
 		
 		createScenes();
 		SceneManager.getInstance().changeScene("menu");

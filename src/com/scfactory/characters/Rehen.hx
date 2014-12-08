@@ -44,7 +44,7 @@ class Rehen extends AnimatedCharacter
 		if (state.actual ==EstadoCharacter.ESTADO_R_EPERANDO) {
 			moveBy(0, 30, [ConstantManager.TIPO_FLOOR, ConstantManager.TIPO_PISO]);
 		}
-		else{
+		else if(state.actual !=EstadoCharacter.ESTADO_MUERTO){
 			var xx, yy:Float;
 				xx = XX.shift();
 				yy = YY.shift();
@@ -81,7 +81,7 @@ class Rehen extends AnimatedCharacter
 				}
 			}
 			
-			moveTo(xx, yy);
+			moveTo(xx, yy,[ConstantManager.TIPO_FLOOR,ConstantManager.TIPO_PISO]);
 		}
 		
 		
@@ -91,10 +91,7 @@ class Rehen extends AnimatedCharacter
 	
 	override public function moveCollideY(e:Entity):Bool 
 	{
-		if (state.actual == EstadoCharacter.ESTADO_R_EPERANDO) {
-			return true;
-		}
-		return false;
+		return super.moveCollideY(e);
 	}
 	
 	override public function moveCollideX(e:Entity):Bool 
@@ -133,6 +130,15 @@ class Rehen extends AnimatedCharacter
 		YY.push(y);
 		YY.push(y);
 		
+	}
+	
+	override public function added():Void 
+	{
+		super.added();
+		this.state.actual = EstadoCharacter.ESTADO_R_EPERANDO;
+		this.XX = new Array<Float>();
+		this.YY = new Array<Float>();
+	
 	}
 	
 }

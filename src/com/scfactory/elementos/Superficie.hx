@@ -16,10 +16,12 @@ class Superficie extends Plataforma
 	var plataformas:Array<Plataforma>;
 	var imagen:Image;
 	
+	var xInicial:Float;
+	
 	public function new(x:Float=0, y:Float=0, graphic:Image=null, mask:Mask=null,tipo:String="piso") 
 	{
 		super(x, y, null, null, tipo);
-		
+		xInicial = x;
 		if (graphic == null) {
 			graphic = new Image("img/backgrounds/piso_oscuro_02.png");
 		}
@@ -27,21 +29,30 @@ class Superficie extends Plataforma
 		
 		plataformas = new Array<Plataforma>();
 		
-		var cant:Int = cast((Math.fceil(HXP.width / graphic.width)+2),Int);
-		
 		var p:Plataforma;
-		var yAnt:Float=0;
+		var cant:Int = cast((Math.fceil(HXP.width / imagen.width)+2),Int);
+		
 		for (i in 0...cant) {
-			var nuevo:Float = y + ((Math.random() * 3)-1)*25;
+			var nuevo:Float = y;
 			
-			p = new Plataforma((i-1) * graphic.width+x, nuevo, graphic, mask, tipo);
-			p.setHitbox(graphic.width, graphic.height);
+			p = new Plataforma((i-1) * imagen.width+x, nuevo, this.imagen, mask, this.type);
+			p.setHitbox(imagen.width, imagen.height);
 			//this.addGraphic(p.graphic);
 			plataformas.push(p);
-			yAnt = p.y;		
 			
 		}
+		reset(x, y);
 		
+	}
+	
+	public function reset(x:Float,y:Float) {
+		this.x = xInicial;
+		
+		var xx = this.x-imagen.width;
+		for (p in plataformas) {
+			p.x = xx;
+			xx += p.width;
+		}
 		
 	}
 	
@@ -56,11 +67,8 @@ class Superficie extends Plataforma
 			plataformas.push(p);
 			
 			this.x += imagen.width;
-			//var e:Iterator<Plataforma>  = plataformas.iterator();
-			//while (e.hasNext()) {
-				//var p:Plataforma = e.next();
-				//p.x += p.width;
-			//}this
+			
+			
 		}
 	}
 	

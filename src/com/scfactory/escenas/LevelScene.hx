@@ -16,6 +16,7 @@ import com.scfactory.elementos.ElementManager;
 import com.scfactory.elementos.Superficie;
 import com.scfactory.elementos.Plataforma;
 import com.scfactory.elementos.Superficie;
+import com.scfactory.enemigo.Enemigo;
 import com.scfactory.enemigo.Faller;
 import com.tvj.InputManager;
 import openfl._v2.geom.Point;
@@ -28,13 +29,17 @@ class LevelScene extends GameScene
 {
 
 	private var background: BackGround;
+	private var superficie:Superficie;
+	
 	
 	private var conf:ConfiguracionNivel;
 	
 	private var characters:Array<AnimatedCharacter>;
 	
 	
-	private var rehenesEnEscena:Array<Rehen>;
+	
+	
+	
 	
 	private static inline var MAX_REHENES:Int = 7;
 	var bExit:Button ;
@@ -51,26 +56,21 @@ class LevelScene extends GameScene
 	{
 		super();
 	
-		rehenesEnEscena = new Array<Rehen>();
+		
 		characters = new Array<AnimatedCharacter>();
 		
 		bExit= new Button("Volver al Menu");
-		bExit.x = 150;
-		bExit.y = 100;
+		bExit.x = 0;
+		bExit.y = 20;
 		bExit.addEventListener(Button.CLICKED, exit);
-		this.add(bExit);
-		
-		
-		
 		bExit.followCamera = true;
 		bExit.layer = 0;
 		
 		
-		conf = new ConfiguracionNivel();
 		loadPlataformas();
 		
+
 		background = new BackGround(backgroundImage, floor);
-		this.add(background);
 		background.layer = 15;
 		
 	}
@@ -80,51 +80,33 @@ class LevelScene extends GameScene
 	}
 	
 	private function loadPlataformas() {
-		conf.add_plataforma(100, 300);
-		conf.add_plataforma(300, 250);
-		conf.add_plataforma(500, 200);
-		conf.add_plataforma(700, 225);
-		conf.add_plataforma(900, 250);
-		conf.add_plataforma(1100, 275);
-		conf.add_plataforma(1300, 300);
-		conf.add_plataforma(1500, 250);
-		conf.add_plataforma(1700, 200);
-		conf.add_plataforma(1900, 350);
-		conf.add_plataforma(2100, 300);
-		conf.add_plataforma(2300, 250);
-		conf.add_plataforma(2500, 200);
-		conf.add_plataforma(2700, 100);
-		conf.add_plataforma(2900, 150);
-		conf.add_plataforma(3100, 300);
-		conf.add_plataforma(3300, 350);
-		conf.add_plataforma(3500, 300);
+		conf = new ConfiguracionNivel();
+	
+		conf.add_plataforma(100, 450);
+		conf.add_plataforma(700, 450);
+		conf.add_plataforma(1200, 350);
+		conf.add_plataforma(1700, 250);
+		conf.add_plataforma(2600, 350);
+		conf.add_plataforma(2700, 150);
+		conf.add_plataforma(3300, 450);
+		conf.add_plataforma(3600, 350);
+		conf.add_plataforma(4000, 450);
+		conf.add_plataforma(4700, 450);
+		conf.add_plataforma(5500, 350);
+		conf.add_plataforma(6000, 350);
+		conf.add_plataforma(6000, 250);
+		conf.add_plataforma(6500, 250);
+		conf.add_plataforma(7500, 150);
+		conf.add_plataforma(7500, 450);
+		conf.add_plataforma(8000, 250);
+		conf.add_plataforma(8000, 450);
+		conf.add_plataforma(8400, 350);
+		conf.add_plataforma(8900, 350);
 	}
 	
 	public function set_hero(hero:Hero):Hero {
-			//this.bringToFront(bExit);
-		
 			this.hero = hero;
-			this.hero.y = 150;
-			this.hero.x = 100;
-			this.add(hero);
-			this.characters.push(hero);
-			
-			var t:Superficie = new Superficie(200, 555, null,null,"floor");
-			//t.setHitbox(interface., HXP.height-200);
-			t.hero = hero;
-			this.add(t);
-			var re:Rehen;
-			
-			//var anim:Spritemap = new Spritemap("img/runner2.png",40, 51);
-			//anim.add("normal", [0, 1, 2, 3, 4, 5, 6, 7, 8],13);
-			
-			//for (i in 0...3) {
-				//re = new Rehen();
-				//this.add(re);
-				//rescatarRehen(re);
-			//}
-			//
-			return this.hero;
+		return this.hero;
 	}
 	
 	override public function update() 
@@ -132,7 +114,7 @@ class LevelScene extends GameScene
 		super.update();
 		
 		if (InputManager.getInstance().keyPressed("Q")) {
-			trace(hero.layer + "..." + bExit.layer + "...");
+			trace(conf.x_Actual());
 		}
 		
 		
@@ -141,19 +123,11 @@ class LevelScene extends GameScene
 			this.camera.x += 3;
 			
 			
-			
-			//if (hero.y > floor.y + floor.height-hero.height) {
-				//hero.y = floor.y + floor.height-hero.height;
-			//}
-			//if (hero.y < floor.y -hero.height/2) {
-				//hero.y = floor.y-hero.height/2 ;
-			//}
-			
-			if (Math.random() > 0.997) {
+			if (Math.random() > 0.99) {
 				agregarFaller();
 			}
 			
-			if (Math.random() > 0.98) {
+			if (Math.random() > 0.989) {
 				agregarRehen();
 			}
 			
@@ -163,26 +137,38 @@ class LevelScene extends GameScene
 	}
 	
 	private function agregarFaller() {
-		var f:Faller = ElementManager.get_Instance().useFaller();
+		var f:Enemigo = ElementManager.get_Instance().useFaller();
 		if(f!=null){
 			f.x = this.camera.x + HXP.width + 50;
-			f.y = Math.random() * HXP.height / 2;
+			f.y = Math.random() * HXP.height*0.75;
 			
+			
+			ElementManager.get_Instance().corregiPosicion(f);
 			
 			this.add(f);
+		}
+		else {
+			trace("No tengo para agregar enemigos");
 		}
 	}
 	
 	private function agregarRehen() {
-		if(rehenesEnEscena.length<MAX_REHENES){
-			var r:Rehen = new Rehen(null,HXP.camera.x + HXP.width +30,Math.random() * HXP.height / 2);
+		var r:Rehen = ElementManager.get_Instance().getRehen();
+		if (r!=null) {
+			r.x = HXP.camera.x + HXP.width +300;
+			r.y = Math.random() * HXP.height * 0.75;
 			this.add(r);
-			rehenesEnEscena.push(r);
+			
+			ElementManager.get_Instance().corregiPosicion(r);
+		}
+		else {
+		
 		}
 	}
 	
 	private function agregarPlat() {
 		var x:Float = conf.x_Actual();
+		
 		if(x!=null){
 			if (x < this.camera.x + HXP.width + 100) {
 				var p:Point = conf.get_Next();
@@ -191,7 +177,7 @@ class LevelScene extends GameScene
 			}
 		}
 		else {
-			conf.resetPosiciones(this.camera.x + HXP.width + 50);
+			conf.resetPosiciones(this.camera.x+HXP.width);
 		}
 	}
 	
@@ -205,6 +191,13 @@ class LevelScene extends GameScene
 	}
 	
 	public function MatarCharacter(ch:AnimatedCharacter) {
+		if (characters.indexOf(ch) == -1){
+			ElementManager.get_Instance().removeRehen(cast(ch, Rehen));
+			
+			return;
+		}
+		
+		
 		var it:Iterator<AnimatedCharacter> = characters.iterator();
 		///lo salteo al heroe
 		var atras:Rehen;
@@ -221,38 +214,27 @@ class LevelScene extends GameScene
 		}
 		else {
 			var i:Int = characters.indexOf(ch);
-			trace(characters.length, i);
+			
 			
 			if(i<characters.length-1){
 				var an:Rehen = cast(characters.slice(i + 1, i+2).pop() , Rehen);
 				an.adelante = cast(ch, Rehen).adelante;
 			}
 			characters.remove(ch);
-			this.remove(ch);
-			rehenesEnEscena.remove(cast(ch,Rehen));
-			//it.next();
-			//;
-			//while (it.hasNext()) {
-				//an = cast(it.next(),Rehen);
-				//if(ch.distanceToPoint(an.adelante.x, an.adelante.y)==0){
-					//an.adelante = cast(ch, Rehen).adelante;
-					//characters.remove(an.adelante);	
-					//this.remove(ch);
-					//break;
-				//}
-				//
-			//}
+			
+			ElementManager.get_Instance().removeRehen(cast(ch, Rehen));
+			
+			
 		}
 		
 		
 	}
 	
 	public function checkRehenes() {
-		for (r in rehenesEnEscena) {
+		for (r in ElementManager.get_Instance().rehenesEnEscena) {
 			if (r.x + 200 < this.camera.x) {
-				trace(rehenesEnEscena.length);		
-				rehenesEnEscena.remove(r);
-				this.remove(r);
+				r.morir();
+				
 			}
 		}
 		
@@ -262,6 +244,59 @@ class LevelScene extends GameScene
 	{
 		super.begin();
 		this.sprite.alpha = 1;
+		init();
+	}
+	
+	override public function end() 
+	{
+		super.end();
+		this.sprite.scaleX = 1;
+		this.sprite.scaleY = 1;
+		
+		
+		ElementManager.get_Instance().reset();
+		this.removeAll();
+		
+		while (characters.length > 0) {
+			characters.pop();
+		}
+		
+		estado = "exit";
+		
+	}
+	
+	
+	private function init() {
+		trace("init level");
+		estado = "jugando";
+		this.camera.x = 0;
+		ElementManager.get_Instance().reset();
+		if (this.hero == null) {
+			trace("new heroe");
+			this.hero = new Hero("img/runner2.png");
+		}
+		
+		hero.moveTo(50, 50);
+		hero.reset();
+		
+		this.add(hero);
+		this.characters.push(hero);
+		
+		if(superficie==null){
+			superficie = new Superficie(200, 555, null,null,"floor");
+			superficie.hero = hero;
+		}
+		else {
+			superficie.reset(200, 555);
+		}
+		this.add(superficie);
+		
+		conf.resetPosiciones(0);
+		
+		this.add(bExit);
+		
+		this.add(background);
+		
 	}
 	
 }
