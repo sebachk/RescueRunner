@@ -10,6 +10,7 @@ import com.haxepunk.Scene;
 import com.haxepunk.Tween;
 import com.haxepunk.tweens.motion.LinearMotion;
 import com.haxepunk.tweens.motion.LinearPath;
+import com.scfactory.elementos.Cortina;
 import motion.Actuate;
 import openfl.events.Event;
 import openfl.events.MouseEvent;
@@ -23,6 +24,8 @@ class MenuScene extends GameScene
 {
 	var botones:List<Button>;
 	var back:Entity;
+	
+	
 	public function new() 
 	{
 		super();
@@ -57,10 +60,11 @@ class MenuScene extends GameScene
 		
 		
 		
-		
-		
-		
 		//add(help);
+	}
+	
+	override public function init() {
+		trace("scene inited");
 	}
 	
 	public function addButton(buton:Button) {
@@ -71,6 +75,7 @@ class MenuScene extends GameScene
 		SceneManager.getInstance().changeScene("game");
 	}
 	
+	
 	function helpClick(_) {
 		trace("help");
 		
@@ -79,15 +84,13 @@ class MenuScene extends GameScene
 	override public function begin() 
 	{
 		
-		this.sprite.alpha = 1;
 		
-		Actuate.tween(HXP.scene.sprite, 0.2, { scaleX:1,scaleY:1 } ).onComplete(beginScene);
 		//super.begin();
 		
 		for (b in botones) {
 			this.add(b);
 		}
-		
+		super.begin();
 	}
 	
 	private function beginScene() {
@@ -95,15 +98,15 @@ class MenuScene extends GameScene
 		
 	}
 	
-	override public function end() 
+	override public function onEndScene() 
 	{
-		
-		Actuate.tween(HXP.scene.sprite,0.6,{scaleX:5,scaleY:5}).onComplete(endScene);
+		cortina.onEnter();
+		//Actuate.tween(HXP.scene.sprite,0.6,{scaleX:5,scaleY:5}).onComplete(endScene);
 	}
 	
 	private function endScene() {
-		trace("END MENU");
 		super.end();
+		//super.end();
 		
 	}
 	
