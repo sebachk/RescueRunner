@@ -1,9 +1,11 @@
 package com.scfactory.escenas;
 import com.haxepunk.Entity;
+import com.haxepunk.Graphic;
 import com.haxepunk.graphics.Backdrop;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.gui.Button;
 import com.haxepunk.gui.Control;
+import com.haxepunk.gui.graphic.NineSlice;
 import com.haxepunk.gui.Panel;
 import com.haxepunk.HXP;
 import com.haxepunk.Scene;
@@ -36,7 +38,11 @@ class MenuScene extends GameScene
 		botones = new List<Button>();
 		Control.useSkin("img/Skins/GameSkin.png");
 		
-		var start :Button = new Button("START",0,0,50,30);
+		var start :Button = new Button("START", 0, 0, 50, 30);
+		
+		//start.hover = new NineSlice("img/portada/start_amarillo.png");
+		
+		
 		//start.addEventListener(MouseEvent.CLICK, click);
 		start.addEventListener(Button.CLICKED, click);
 		start.layer = 0;
@@ -46,7 +52,7 @@ class MenuScene extends GameScene
 		botones.add(start);
 		var help:Button = new Button ("Help",0,0,50,30);
 		help.addEventListener(Button.CLICKED, helpClick);
-		start.font = "Impact";
+		start.font = "METALSTORM3DI_0.TTF";
 		start.size = 16;
 		start.x = HXP.halfWidth-start.halfWidth;
 		start.y = HXP.halfHeight-start.halfHeight;
@@ -55,7 +61,8 @@ class MenuScene extends GameScene
 		help.y = start.y + start.height + 10;
 		help.layer = 0;
 		help.size = 16;
-		help.font = "impact";
+		
+		help.font = "METALSTORM3DI_0.TTF";
 		botones.add(help);
 		
 		
