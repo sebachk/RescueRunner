@@ -54,25 +54,24 @@ class ElementManager
 		return instance;
 	}
 	
-	private function loadPlataformaGraphic():Graphic {
+	private function loadPlataformaGraphic():Image {
 		
 		
-		return Image.createRect(600, 30, 0xFFFF00);
+		return new Image("img/escena_juego/plataforma.png");
 	}
 	private function loadPlataformas() {
 		var pt:Plataforma;
 		
+		var graph:Image = loadPlataformaGraphic();
+		
 		platPool = new Array<Plataforma>();
 		platUsadas = new Array<Plataforma>();
-		platPool.push( new Plataforma(200, 300, loadPlataformaGraphic(), new Hitbox(600,30), ConstantManager.TIPO_PISO));
-		platPool.push(new Plataforma(350, 300, loadPlataformaGraphic(), new Hitbox(600,30), ConstantManager.TIPO_PISO));
-		platPool.push(new Plataforma(350, 250, loadPlataformaGraphic(), new Hitbox(600,30), ConstantManager.TIPO_PISO));
-		platPool.push(new Plataforma(500, 300, loadPlataformaGraphic(), new Hitbox(600,30), ConstantManager.TIPO_PISO));
-		platPool.push(new Plataforma(500, 250, loadPlataformaGraphic(), new Hitbox(600,30), ConstantManager.TIPO_PISO));
-		platPool.push(new Plataforma(500, 250, loadPlataformaGraphic(), new Hitbox(600,30), ConstantManager.TIPO_PISO));
-		platPool.push(new Plataforma(500, 250, loadPlataformaGraphic(), new Hitbox(600,30), ConstantManager.TIPO_PISO));
-		platPool.push(new Plataforma(500, 250, loadPlataformaGraphic(), new Hitbox(600,30), ConstantManager.TIPO_PISO));
-		platPool.push(new Plataforma(500, 250, loadPlataformaGraphic(), new Hitbox(600,30), ConstantManager.TIPO_PISO));
+		for (i in 0...7) {
+			platPool.push( new Plataforma(0, 0, graph, new Hitbox(graph.width,graph.height-5,0,5), ConstantManager.TIPO_PISO));
+			
+		}
+		
+		
 		
 		
 	}

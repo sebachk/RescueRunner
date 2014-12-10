@@ -5,7 +5,9 @@ import com.haxepunk.graphics.Backdrop;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.gui.Button;
 import com.haxepunk.gui.Control;
+import com.haxepunk.gui.FormatAlign;
 import com.haxepunk.gui.graphic.NineSlice;
+import com.haxepunk.gui.Label;
 import com.haxepunk.gui.Panel;
 import com.haxepunk.HXP;
 import com.haxepunk.Scene;
@@ -16,6 +18,7 @@ import com.scfactory.elementos.Cortina;
 import motion.Actuate;
 import openfl.events.Event;
 import openfl.events.MouseEvent;
+import openfl.text.TextFormatAlign;
 
 
 /**
@@ -32,38 +35,43 @@ class MenuScene extends GameScene
 	{
 		super();
 		back = new Entity();
-		back.addGraphic(new Image("img/Menu/portada.png"));
+		back.addGraphic(new Image("img/portada/portada.png"));
 		this.add(back);
 		back.layer = 15;
 		botones = new List<Button>();
 		Control.useSkin("img/Skins/GameSkin.png");
 		
-		var start :Button = new Button("START", 0, 0, 50, 30);
+		var start :Button = new Button("sTart ", 113, 369, 544, 46);
 		
 		//start.hover = new NineSlice("img/portada/start_amarillo.png");
 		
 		
 		//start.addEventListener(MouseEvent.CLICK, click);
 		start.addEventListener(Button.CLICKED, click);
-		start.layer = 0;
+		
 		
 		//add(start);
 		
 		botones.add(start);
-		var help:Button = new Button ("Help",0,0,50,30);
+	
+		var help:Button = new Button ("Help ",0,0,544,46);
 		help.addEventListener(Button.CLICKED, helpClick);
-		start.font = "METALSTORM3DI_0.TTF";
-		start.size = 16;
-		start.x = HXP.halfWidth-start.halfWidth;
-		start.y = HXP.halfHeight-start.halfHeight;
+		
+		start.label.color = 0xEDFC05;
+		start.label.font= "font/METALSTORMB_0.TTF";
+		
+		start.size = 40;
+		
+		
 		
 		help.x = start.x;
 		help.y = start.y + start.height + 10;
 		help.layer = 0;
 		help.size = 16;
 		
-		help.font = "METALSTORM3DI_0.TTF";
-		botones.add(help);
+		help.label.color = 0xFD2222;
+		help.label.font= "font/METALSTORMB_0.TTF";
+		//botones.add(help);
 		
 		
 		

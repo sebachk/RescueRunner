@@ -6,6 +6,7 @@ import com.haxepunk.graphics.Image;
 import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.gui.Button;
 import com.haxepunk.gui.Control;
+import com.haxepunk.gui.Label;
 import com.haxepunk.gui.Panel;
 import com.haxepunk.HXP;
 import com.haxepunk.Scene;
@@ -23,10 +24,12 @@ import com.scfactory.elementos.Plataforma;
 import com.scfactory.elementos.Superficie;
 import com.scfactory.enemigo.Enemigo;
 import com.scfactory.enemigo.Faller;
+import com.scfactory.persistencia.Persistencia;
 import com.scfactory.persistencia.Score;
 import com.tvj.InputManager;
 import motion.Actuate;
 import openfl._v2.geom.Point;
+import openfl.text.TextFormatAlign;
 
 /**
  * ...
@@ -53,10 +56,17 @@ class LevelScene extends GameScene
 	
 	private static inline var MAX_REHENES:Int = 7;
 	var bExit:Button ;
+	var localScore:Label;
+	var maxScore:Label;
+	
+	var lSalvados:Label;
+	var recorridos:Label;
+	
 	//Piso
 	
 	//Frente
 	
+	var metros:Float;
 	
 	
 	public var hero(default,set):Hero;
@@ -67,9 +77,34 @@ class LevelScene extends GameScene
 	
 		characters = new Array<AnimatedCharacter>();
 		
-		bExit= new Button("Volver al Menu");
+		bExit= new Button("Volver al Menu",0,0,384,40);
 		bExit.addEventListener(Button.CLICKED, exit);
 		//bExit.followCamera = true;
+		
+		recorridos = new Label();
+		lSalvados= new Label();
+		maxScore= new Label();
+		localScore = new Label();
+		
+		recorridos.align = TextFormatAlign.CENTER;
+		lSalvados.align = TextFormatAlign.CENTER;
+		maxScore.align = TextFormatAlign.CENTER;
+		localScore.align = TextFormatAlign.CENTER;
+		
+		recorridos.font= "font/METALSTORMB_0.TTF";
+		lSalvados.font= "font/METALSTORMB_0.TTF";
+		maxScore.font= "font/METALSTORMB_0.TTF";
+		localScore.font= "font/METALSTORMB_0.TTF";
+		
+		recorridos.localX = 30;
+		lSalvados.localX = 30;
+		maxScore.localX = 30;
+		localScore.localX = 30;
+		
+		recorridos.localY = 40;
+		lSalvados.localY = 80;
+		localScore.localY = 120;
+		maxScore.localY = 160;
 		
 		
 		loadPlataformas();
@@ -79,21 +114,32 @@ class LevelScene extends GameScene
 		background.layer = 15;
 		
 		score = new Score();
-		score.x = 100;
-		score.y = 30;
-		this.add(score);
+		
 		
 		panel = new Panel(300, 1000, 400, 400, true);
 		panel.followCamera = true;
 		panel.addControl(bExit);
 		
 		
-		//bExit.x = p.width/2-bExit.width/2;
-		//bExit.y = p.halfHeight-bExit.halfHeight;
+		panel.addControl(bExit);
+		panel.addControl(localScore);
+		panel.addControl(lSalvados);
+		panel.addControl(maxScore);
+		panel.addControl(recorridos);
+		
+		
+		bExit.label.size = 20;
+		recorridos.size  = 20;
+		lSalvados.size  = 20;
+		maxScore.size  = 20;
+		localScore.size  = 20;
+		
+		bExit.localX = panel.width/2-bExit.width/2;
+		bExit.localY = panel.halfHeight - bExit.halfHeight+50;
+		
 		//bExit.layer = -2;
-		//	p.addControl(bExit);
-		
-		
+		bExit.label.font = "font/METALSTORM_0.TTF";
+		bExit.label.color = 0xEDFC05;
 		
 	}
 	
@@ -104,7 +150,6 @@ class LevelScene extends GameScene
 	private function loadPlataformas() {
 		conf = new ConfiguracionNivel();
 	
-		conf.add_plataforma(100, 450);
 		conf.add_plataforma(700, 450);
 		conf.add_plataforma(1200, 350);
 		conf.add_plataforma(1700, 250);
@@ -141,12 +186,17 @@ class LevelScene extends GameScene
 		}
 		
 		agregarPlat();
+		super.update();
 			
 		if(estado=="jugando"){
-			super.update();
+			
 			
 			this.camera.x += ElementManager.get_Instance().velocidadCamara;
-			
+			metros += ElementManager.get_Instance().velocidadCamara;
+			if (metros > 100) {
+				metros = 0;
+				score.add(5);
+			}
 			
 			ElementManager.get_Instance().update();
 			if (!agregarFaller()) {
@@ -211,8 +261,8 @@ class LevelScene extends GameScene
 	private function agregarPlat() {
 		var x:Float = conf.x_Actual();
 		
-		if(x!=null){
-			if (x < this.camera.x + HXP.width + 100) {
+		if (x != null && ElementManager.get_Instance().platPool.length>0){
+			if (x < this.camera.x + HXP.width*2 ) {
 				var p:Point = conf.get_Next();
 				
 				this.add(ElementManager.get_Instance().usePlataforma(p.x, p.y));
@@ -252,7 +302,8 @@ class LevelScene extends GameScene
 			}
 			estado = "perdio";
 			
-			score.add(100 * rehenesSalvados);
+			this.perder();
+			//score.add( * rehenesSalvados);
 			
 			characters = characters.splice(0, 0);
 			
@@ -318,9 +369,22 @@ class LevelScene extends GameScene
 	
 	
 	override public function init() {
+		panel.x = 400 - panel.halfWidth;
+		panel.y = -1000;
+		
+		
+		lSalvados.text=  "Rehenes salvados:  ";
+		recorridos.text= "Metros recorridos: ";
+		localScore.text= "score final:       ";
+		maxScore.text=   "Hi-score:          "+Persistencia.getScore();
+		
+		this.add(score);
+		score.reset();
+		
 		trace("init level");
 		estado = "entrando";
 		this.camera.x = 0;
+		metros = 0;
 		rehenesSalvados = 0;
 		countCapsula = 0;
 		ElementManager.get_Instance().reset();
@@ -350,7 +414,7 @@ class LevelScene extends GameScene
 		
 		
 		this.add(background);
-		this.panel.y = -200;
+		
 	}
 	
 	public function salvarRehenes(c:Capsula) {
@@ -367,6 +431,23 @@ class LevelScene extends GameScene
 		}
 		characters = characters.slice(0, 1);
 		this.remove(c);
+		
+		
+	}
+	
+	
+	private function perder() {
+		var final:Int = score.get() * rehenesSalvados ;
+		trace(final);
+		Persistencia.setScore(final);
+		
+		recorridos.text += ""+score.get();
+		lSalvados.text += "X "+rehenesSalvados;
+		
+		localScore.text += final + "";
+		
+		
+		
 		
 		
 	}

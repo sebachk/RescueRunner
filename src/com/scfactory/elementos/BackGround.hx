@@ -21,7 +21,7 @@ class BackGround extends Entity
 		super(x, y, graphic, mask);
 		
 		this.background = new Backdrop(backgroundImage, true, false);
-		this.back2 = new Backdrop("img/escena/estrellas_chicas.png",true,false);
+		this.back2 = new Backdrop("img/escena_juego/estrellas_grandes.png",true,false);
 		
 		this.floor = new Backdrop(floor, true, false);
 		

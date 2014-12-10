@@ -24,7 +24,7 @@ class GameScene extends Scene
 		cortina.entered = SceneManager.getInstance().putScene;
 		cortina.exited = exiting;
 		this.add(cortina);
-		cortina.layer = -1;
+		cortina.layer = -10;
 		
 	}
 	

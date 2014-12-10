@@ -62,21 +62,21 @@ class Rehen extends AnimatedCharacter
 			}
 			
 			if (xx > this.x) {
-				while (xx - this.x > 6)
+				while (xx - this.x > AnimatedCharacter.MAXVEL)
 					xx--;
 			}
 			else {
-				while (xx - this.x < -6)
+				while (xx - this.x < -AnimatedCharacter.MAXVEL-1)
 					xx++;
 			}
 			
 			if (yy > this.y) {
-				while (yy - this.y > 6) {
+				while (yy - this.y > AnimatedCharacter.MAXVEL) {
 					yy--;
 				}
 			}
 			else {
-				while (yy - this.y < -6) {
+				while (yy - this.y < -AnimatedCharacter.MAXVEL-1) {
 					yy++;
 				}
 			}
@@ -97,7 +97,7 @@ class Rehen extends AnimatedCharacter
 	
 	override public function moveCollideX(e:Entity):Bool 
 	{
-		return false;
+		return super.moveCollideX(e);
 	}
 	
 	public function rescatar() {

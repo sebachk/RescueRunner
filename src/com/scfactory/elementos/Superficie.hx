@@ -23,7 +23,7 @@ class Superficie extends Plataforma
 		super(x, y, null, null, tipo);
 		xInicial = x;
 		if (graphic == null) {
-			imagen = new Image("img/escena/pisos.png");
+			imagen = new Image("img/escena_juego/piso.png");
 		}
 		else{
 			imagen = graphic;
@@ -36,8 +36,8 @@ class Superficie extends Plataforma
 		for (i in 0...cant) {
 			var nuevo:Float = y;
 			
-			p = new Plataforma((i-1) * imagen.width+x, nuevo, this.imagen, mask, this.type);
-			p.setHitbox(imagen.width, imagen.height);
+			p = new Plataforma((i-1) * imagen.width+x, nuevo-20, this.imagen, mask, this.type);
+			p.setHitbox(imagen.width, imagen.height-10,0,-10);
 			//this.addGraphic(p.graphic);
 			plataformas.push(p);
 			

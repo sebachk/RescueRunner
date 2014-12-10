@@ -37,7 +37,8 @@ class Plataforma extends Entity
 			if (this.x + this.width < this._camera.x) {
 				
 				ElementManager.get_Instance().removerPlataforma(this);
-			}
+		}
+		
 	}
 	
 	override public function moveCollideX(e:Entity):Bool 
@@ -47,6 +48,13 @@ class Plataforma extends Entity
 		e.x = this.x - e.width;
 	}
 	
+	
+	override public function added():Void 
+	{
+		super.added();
+		this.layer = 15;
+		
+	}
 	
 	
 	

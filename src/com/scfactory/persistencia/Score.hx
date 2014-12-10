@@ -1,5 +1,7 @@
 package com.scfactory.persistencia;
 import com.haxepunk.Entity;
+import com.haxepunk.Graphic;
+import com.haxepunk.graphics.Image;
 import com.haxepunk.graphics.Text;
 import motion.Actuate;
 import motion.actuators.GenericActuator.IGenericActuator;
@@ -26,9 +28,11 @@ class Score extends Entity
 	}
 
 	private var label:Text;
+	private var panel:Graphic;
+	
 	
 	private function updateLabel() {
-		label.text = "Score: " + Std.int(score);
+		label.text = "Metros: " + Std.int(score);
 	}
 	
 	public function new() 
@@ -37,8 +41,15 @@ class Score extends Entity
 		label = new Text();
 		lastScore = 0;
 		score = 0;
-		this.graphic = label;
+		//this.graphic = label;
 		this.followCamera = true;
+		panel = new Image("img/escena_juego/panel_puntos.png");
+		this.addGraphic(panel);
+		this.addGraphic(label);
+		
+		
+		this.label.size = 20;
+		this.label.font = "font/METALSTORM_0.TTF";
 	}
 	
 	public function add(value:Int) {
@@ -46,15 +57,15 @@ class Score extends Entity
 		lastScore += value;
 		
 		Actuate.stop(this);
-		Actuate.tween(this, 2, { score:lastScore } );
+		Actuate.tween(this, 0.3, { score:lastScore } );
 		
 		//this.score = value;
 	}
 	
 	
-	public function get() {
-		trace(score+" score");
-		return score;
+	public function get():Int {
+		
+		return lastScore;
 	}
 	
 	override public function update():Void 
@@ -63,6 +74,11 @@ class Score extends Entity
 		label.updateBuffer();
 		label.update();
 		updateLabel();
+	}
+	
+	public function reset() {
+		score = 0;
+		lastScore = 0;
 	}
 	
 }
