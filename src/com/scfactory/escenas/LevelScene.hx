@@ -5,12 +5,15 @@ import com.haxepunk.graphics.Backdrop;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.gui.Button;
+import com.haxepunk.gui.Control;
+import com.haxepunk.gui.Panel;
 import com.haxepunk.HXP;
 import com.haxepunk.Scene;
 import com.scfactory.characters.AnimatedCharacter;
 import com.scfactory.characters.Hero;
 import com.scfactory.characters.Rehen;
 import com.scfactory.elementos.BackGround;
+import com.scfactory.elementos.Capsula;
 import com.scfactory.elementos.ConfiguracionNivel;
 import com.scfactory.elementos.ElementManager;
 import com.scfactory.elementos.Superficie;
@@ -18,7 +21,9 @@ import com.scfactory.elementos.Plataforma;
 import com.scfactory.elementos.Superficie;
 import com.scfactory.enemigo.Enemigo;
 import com.scfactory.enemigo.Faller;
+import com.scfactory.persistencia.Score;
 import com.tvj.InputManager;
+import motion.Actuate;
 import openfl._v2.geom.Point;
 
 /**
@@ -31,15 +36,18 @@ class LevelScene extends GameScene
 	private var background: BackGround;
 	private var superficie:Superficie;
 	
-	
 	private var conf:ConfiguracionNivel;
-	
 	private var characters:Array<AnimatedCharacter>;
 	
+	private var score:Score;
 	
 	
+	private var rehenesSalvados:Int;
 	
 	
+	private var countCapsula:Int;
+	
+	var p:Panel;
 	
 	private static inline var MAX_REHENES:Int = 7;
 	var bExit:Button ;
@@ -56,15 +64,13 @@ class LevelScene extends GameScene
 	{
 		super();
 	
-		
 		characters = new Array<AnimatedCharacter>();
 		
 		bExit= new Button("Volver al Menu");
 		bExit.x = 0;
 		bExit.y = 20;
 		bExit.addEventListener(Button.CLICKED, exit);
-		bExit.followCamera = true;
-		bExit.layer = 0;
+		//bExit.followCamera = true;
 		
 		
 		loadPlataformas();
@@ -72,6 +78,19 @@ class LevelScene extends GameScene
 
 		background = new BackGround(backgroundImage, floor);
 		background.layer = 15;
+		
+		score = new Score();
+		score.x = 100;
+		score.y = 30;
+		this.add(score);
+		
+		p = new Panel(300, 1000, 400, 400, true);
+		p.addControl(bExit);
+		
+		p.followCamera = true;
+		p.addControl(bExit);
+		
+		
 		
 	}
 	
@@ -113,30 +132,41 @@ class LevelScene extends GameScene
 	{
 		super.update();
 		
+		
 		if (InputManager.getInstance().keyPressed("Q")) {
 			trace(conf.x_Actual());
+			
+			this.score.add( 50);
 		}
 		
 		
 		if(estado=="jugando"){
 			
-			this.camera.x += 3;
+			this.camera.x += ElementManager.get_Instance().velocidadCamara;
 			
 			
-			if (Math.random() > 0.99) {
-				agregarFaller();
+			ElementManager.get_Instance().update();
+			if (!agregarFaller()) {
+				if(!agregarRehen())
+					agregarCapsula();
 			}
 			
-			if (Math.random() > 0.989) {
-				agregarRehen();
-			}
 			
 			agregarPlat();
 			checkRehenes();
 		}
 	}
-	
-	private function agregarFaller() {
+	private function agregarCapsula():Bool {
+		var c:Capsula = ElementManager.get_Instance().getCapsula();
+		if (c != null) {
+			c.x = this.camera.x + HXP.width + 200;
+			c.y = 0; 
+			this.add(c);
+			return true;
+		}
+		return false;
+	}
+	private function agregarFaller():Bool {
 		var f:Enemigo = ElementManager.get_Instance().useFaller();
 		if(f!=null){
 			f.x = this.camera.x + HXP.width + 50;
@@ -146,13 +176,15 @@ class LevelScene extends GameScene
 			ElementManager.get_Instance().corregiPosicion(f);
 			
 			this.add(f);
+			return true;
 		}
 		else {
-			trace("No tengo para agregar enemigos");
+			
+			return false;
 		}
 	}
 	
-	private function agregarRehen() {
+	private function agregarRehen():Bool {
 		var r:Rehen = ElementManager.get_Instance().getRehen();
 		if (r!=null) {
 			r.x = HXP.camera.x + HXP.width +300;
@@ -160,9 +192,10 @@ class LevelScene extends GameScene
 			this.add(r);
 			
 			ElementManager.get_Instance().corregiPosicion(r);
+			return true;
 		}
 		else {
-		
+		return false;
 		}
 	}
 	
@@ -210,7 +243,13 @@ class LevelScene extends GameScene
 			}
 			estado = "perdio";
 			
+			score.add(100 * rehenesSalvados);
+			
 			characters = characters.splice(0, 0);
+			trace(p.layer);
+			//this.add(p);
+			Actuate.tween(p, 1, { y:50 } );
+		
 		}
 		else {
 			var i:Int = characters.indexOf(ch);
@@ -270,6 +309,8 @@ class LevelScene extends GameScene
 		trace("init level");
 		estado = "jugando";
 		this.camera.x = 0;
+		rehenesSalvados = 0;
+		countCapsula = 0;
 		ElementManager.get_Instance().reset();
 		if (this.hero == null) {
 			trace("new heroe");
@@ -293,10 +334,29 @@ class LevelScene extends GameScene
 		
 		conf.resetPosiciones(0);
 		
-		this.add(bExit);
+		this.add(p);
 		
 		this.add(background);
+		this.p.y = -600;
+	}
+	
+	public function salvarRehenes(c:Capsula) {
+		trace("escatando rehenes");
+		for (r in characters) {
+			if (r != this.hero) {
+				cast(r, Rehen).salvar();
+				
+				ElementManager.get_Instance().removeRehen(cast(r,Rehen));
+				rehenesSalvados++;
+				
+			}
+			
+		}
+		characters = characters.slice(0, 1);
+		this.remove(c);
+		
 		
 	}
+	
 	
 }

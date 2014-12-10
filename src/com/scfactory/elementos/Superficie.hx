@@ -23,10 +23,11 @@ class Superficie extends Plataforma
 		super(x, y, null, null, tipo);
 		xInicial = x;
 		if (graphic == null) {
-			graphic = new Image("img/backgrounds/piso_oscuro_02.png");
+			imagen = new Image("img/escena/pisos.png");
 		}
-		imagen = graphic;
-		
+		else{
+			imagen = graphic;
+		}
 		plataformas = new Array<Plataforma>();
 		
 		var p:Plataforma;

@@ -8,6 +8,7 @@ import com.haxepunk.HXP;
 import com.haxepunk.Mask;
 import com.haxepunk.masks.Hitbox;
 import com.scfactory.const.ConstantManager;
+import com.scfactory.elementos.Capsula;
 import com.scfactory.estados.EstadoCharacter;
 import com.tvj.Animation;
 import com.tvj.GameElement;
@@ -63,7 +64,7 @@ class Hero extends AnimatedCharacter
 		if (InputManager.getInstance().keyPressed("A")) {
 				acceleracion.x = -2;
 		}
-		estado = AnimatedCharacter.ESTADO_SALTANDO;
+		
 		state.actual = EstadoCharacter.ESTADO_SALTANDO;
 		
 		//this.moveTo(nuevoX, nuevoY);
@@ -93,7 +94,8 @@ class Hero extends AnimatedCharacter
 			anim.flipped = true;
 		}
 		
-		this.moveBy(velocidad.x, velocidad.y,[ConstantManager.TIPO_PISO,ConstantManager.TIPO_FLOOR,ConstantManager.TIPO_CHARACTER]);
+		this.moveBy(velocidad.x, velocidad.y, [ConstantManager.TIPO_CAPSULA,ConstantManager.TIPO_PISO,
+					ConstantManager.TIPO_FLOOR,ConstantManager.TIPO_CHARACTER]);
 		super.update();
 		
 	}
@@ -130,6 +132,11 @@ class Hero extends AnimatedCharacter
 	override public function moveCollideY(e:Entity):Bool 
 	{
 		//if (ret)
+		if (e.type == ConstantManager.TIPO_CAPSULA) {
+			this.lScene.salvarRehenes(cast(e, Capsula));
+			trace("Collision con Capsula en Y");
+			return false;
+		}
 		if (e.type == ConstantManager.TIPO_CHARACTER) {
 			return false;
 		}
@@ -145,6 +152,11 @@ class Hero extends AnimatedCharacter
 	override public function moveCollideX(e:Entity):Bool 
 	{
 		
+		if (e.type == ConstantManager.TIPO_CAPSULA) {
+			trace("Collision con Capsula en X");
+			this.lScene.salvarRehenes(cast(e, Capsula));
+			return false;
+		}
 		if (e.type == ConstantManager.TIPO_CHARACTER) {
 			var ch:Rehen = cast(e, Rehen);
 			if (ch.state.actual == EstadoCharacter.ESTADO_R_EPERANDO) {
@@ -152,7 +164,10 @@ class Hero extends AnimatedCharacter
 			}
 			return false;
 		}
+		
 		return super.moveCollideX(e);
+		
+		
 	
 	}
 	

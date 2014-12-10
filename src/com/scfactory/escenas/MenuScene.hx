@@ -4,6 +4,7 @@ import com.haxepunk.graphics.Backdrop;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.gui.Button;
 import com.haxepunk.gui.Control;
+import com.haxepunk.gui.Panel;
 import com.haxepunk.HXP;
 import com.haxepunk.Scene;
 import com.haxepunk.Tween;
@@ -53,6 +54,9 @@ class MenuScene extends GameScene
 		help.size = 16;
 		help.font = "impact";
 		botones.add(help);
+		
+		
+		
 		
 		
 		

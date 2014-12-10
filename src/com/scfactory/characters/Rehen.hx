@@ -92,6 +92,7 @@ class Rehen extends AnimatedCharacter
 	override public function moveCollideY(e:Entity):Bool 
 	{
 		return super.moveCollideY(e);
+		
 	}
 	
 	override public function moveCollideX(e:Entity):Bool 
@@ -139,6 +140,11 @@ class Rehen extends AnimatedCharacter
 		this.XX = new Array<Float>();
 		this.YY = new Array<Float>();
 	
+	}
+	
+	public function salvar() {
+		state.actual = EstadoCharacter.ESTADO_R_EPERANDO;
+		adelante = null;
 	}
 	
 }

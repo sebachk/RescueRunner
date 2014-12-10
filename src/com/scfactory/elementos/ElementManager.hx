@@ -2,6 +2,7 @@ package com.scfactory.elementos;
 import com.haxepunk.Entity;
 import com.haxepunk.Graphic;
 import com.haxepunk.graphics.Image;
+import com.haxepunk.HXP;
 import com.haxepunk.masks.Hitbox;
 import com.scfactory.characters.Rehen;
 import com.scfactory.const.ConstantManager;
@@ -28,6 +29,24 @@ class ElementManager
 	//Enemigos
 	public var fallerPool:Array<Enemigo>;
 	public var enemigosEnEscena:Array<Enemigo>;
+	
+	
+	private var capsula:Capsula;
+	
+	private var intervaloEnemigo:Float;
+	private var intervaloRehen:Float;
+	private var intervaloCapsula:Float;
+	
+	
+	private var inicEnemigo:Float;
+	private var inicRehen:Float;
+	private var inicCapsula:Float;
+	
+	private var dificultad:Float = 30;
+	
+	
+	public var velocidadCamara:Float;
+	
 	public static function get_Instance():ElementManager {
 		if (instance == null) {
 			instance = new ElementManager();
@@ -38,22 +57,22 @@ class ElementManager
 	private function loadPlataformaGraphic():Graphic {
 		
 		
-		return Image.createRect(600, 25, 0xFFFF00);
+		return Image.createRect(600, 30, 0xFFFF00);
 	}
 	private function loadPlataformas() {
 		var pt:Plataforma;
 		
 		platPool = new Array<Plataforma>();
 		platUsadas = new Array<Plataforma>();
-		platPool.push( new Plataforma(200, 300, loadPlataformaGraphic(), new Hitbox(600,25), ConstantManager.TIPO_PISO));
-		platPool.push(new Plataforma(350, 300, loadPlataformaGraphic(), new Hitbox(600,25), ConstantManager.TIPO_PISO));
-		platPool.push(new Plataforma(350, 250, loadPlataformaGraphic(), new Hitbox(600,25), ConstantManager.TIPO_PISO));
-		platPool.push(new Plataforma(500, 300, loadPlataformaGraphic(), new Hitbox(600,25), ConstantManager.TIPO_PISO));
-		platPool.push(new Plataforma(500, 250, loadPlataformaGraphic(), new Hitbox(600,25), ConstantManager.TIPO_PISO));
-		platPool.push(new Plataforma(500, 250, loadPlataformaGraphic(), new Hitbox(600,25), ConstantManager.TIPO_PISO));
-		platPool.push(new Plataforma(500, 250, loadPlataformaGraphic(), new Hitbox(600,25), ConstantManager.TIPO_PISO));
-		platPool.push(new Plataforma(500, 250, loadPlataformaGraphic(), new Hitbox(600,25), ConstantManager.TIPO_PISO));
-		platPool.push(new Plataforma(500, 250, loadPlataformaGraphic(), new Hitbox(600,25), ConstantManager.TIPO_PISO));
+		platPool.push( new Plataforma(200, 300, loadPlataformaGraphic(), new Hitbox(600,30), ConstantManager.TIPO_PISO));
+		platPool.push(new Plataforma(350, 300, loadPlataformaGraphic(), new Hitbox(600,30), ConstantManager.TIPO_PISO));
+		platPool.push(new Plataforma(350, 250, loadPlataformaGraphic(), new Hitbox(600,30), ConstantManager.TIPO_PISO));
+		platPool.push(new Plataforma(500, 300, loadPlataformaGraphic(), new Hitbox(600,30), ConstantManager.TIPO_PISO));
+		platPool.push(new Plataforma(500, 250, loadPlataformaGraphic(), new Hitbox(600,30), ConstantManager.TIPO_PISO));
+		platPool.push(new Plataforma(500, 250, loadPlataformaGraphic(), new Hitbox(600,30), ConstantManager.TIPO_PISO));
+		platPool.push(new Plataforma(500, 250, loadPlataformaGraphic(), new Hitbox(600,30), ConstantManager.TIPO_PISO));
+		platPool.push(new Plataforma(500, 250, loadPlataformaGraphic(), new Hitbox(600,30), ConstantManager.TIPO_PISO));
+		platPool.push(new Plataforma(500, 250, loadPlataformaGraphic(), new Hitbox(600,30), ConstantManager.TIPO_PISO));
 		
 		
 	}
@@ -93,13 +112,35 @@ class ElementManager
 		loadFaller();
 		
 		loadRehenes();
+		
+		inicCapsula = 60;
+		inicEnemigo = 6;
+		inicRehen = 4;
+		
+		resetContadores();
+		
+		
+		capsula = new Capsula();
 	}
+	
+	public function resetContadores() {
+		intervaloCapsula = inicCapsula;
+		intervaloEnemigo = inicEnemigo;
+		intervaloRehen = inicRehen;
+		velocidadCamara = 2;
+	}
+	
 	////////////////ENEMIGOS///////////////////////////
 	public function useFaller():Enemigo {
-		if (fallerPool.length > 0) {
-			var e:Enemigo = fallerPool.shift();
-			 enemigosEnEscena.push(e);
-			 return e;
+		
+		if(intervaloEnemigo<0){
+			intervaloEnemigo = inicEnemigo;
+		
+			if (fallerPool.length > 0) {
+				var e:Enemigo = fallerPool.shift();
+				 enemigosEnEscena.push(e);
+				 return e;
+			}
 		}
 		return null;
 	}
@@ -151,6 +192,8 @@ class ElementManager
 		while (rehenesEnEscena.length > 0) {
 			poolRehenes.push(rehenesEnEscena.pop());
 		}
+		
+		resetContadores();
 	}
 	/////////////////////////////////////////////////
 	
@@ -172,12 +215,16 @@ class ElementManager
 	///////////////////////////////////////////////////
 	
 	public function getRehen():Rehen {
-		var r:Rehen = poolRehenes.pop();
-		if (r != null) {
-			rehenesEnEscena.push(r);
+		if (intervaloRehen < 0) {
+			intervaloRehen = inicRehen;
+			
+			var r:Rehen = poolRehenes.pop();
+			if (r != null) {
+				rehenesEnEscena.push(r);
+				return r;
+			}
 		}
-		
-		return r;
+		return null;
 	}
 	
 	public function removeRehen(r:Rehen):Void {
@@ -187,5 +234,39 @@ class ElementManager
 			r.scene.remove(r);
 		}
 		poolRehenes.push(r);
+	}
+	
+	
+	public function getCapsula():Capsula {
+		if (intervaloCapsula < 0) {
+			intervaloCapsula = inicCapsula;
+			
+			return capsula;
+		}
+		return null;
+	}
+	
+	
+	public function removeCapsula() {
+		if (capsula.scene != null) {
+			capsula.scene.remove(capsula);
+		}
+	}
+	
+	public function update() {
+		
+		intervaloCapsula -= HXP.elapsed;
+		intervaloEnemigo -= HXP.elapsed;
+		intervaloRehen -= HXP.elapsed;
+		
+		dificultad -= HXP.elapsed;
+		if (dificultad < 0) {
+			dificultad = 30;
+			inicCapsula += velocidadCamara*0.25;
+			inicEnemigo -= velocidadCamara * 0.25;
+			inicRehen += velocidadCamara*0.25;
+			velocidadCamara += 0.5;
+		}
+		
 	}
 }

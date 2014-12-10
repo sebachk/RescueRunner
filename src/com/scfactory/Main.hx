@@ -5,6 +5,7 @@ import com.haxepunk.Graphic;
 import com.haxepunk.graphics.atlas.Atlas;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.graphics.Spritemap;
+import com.haxepunk.gui.Control;
 import com.haxepunk.HXP;
 import com.haxepunk.Scene;
 import com.haxepunk.utils.Draw;
@@ -20,6 +21,7 @@ import flash.events.Event;
 import flash.Lib;
 import openfl.display.Graphics;
 import openfl.display.SimpleButton;
+import openfl.display.StageScaleMode;
 import openfl.events.KeyboardEvent;
 import openfl.ui.Keyboard;
 import openfl.utils.Timer;
@@ -43,18 +45,14 @@ class Main extends Engine
 	
 	/* ENTRY POINT */
 	
-	override function resize() 
-	{
-		super.resize();
-		if (!inited) init();
-		// else (resize or orientation change)
-	}
+	
+	
 	
 	private function createScenes() {
 		var scn:GameScene = new MenuScene();
 		SceneManager.getInstance().addScene("menu", scn);
 		
-		scn= new LevelScene("img/scene_layer/capa_01.png", "img/backgrounds/fondo_05.png");
+		scn= new LevelScene("img/escena/background_verdoso.png", "img/escena/picos.png");
 		//game.addGraphic(new Image("img/fondo.png"));
 		cast (scn,LevelScene).hero= hero;
 		
@@ -76,6 +74,8 @@ class Main extends Engine
 		
 		//mapa = new Floor(50, 350);
 	
+		Control.defaultLayer = -1;
+		
 		
 		createScenes();
 		SceneManager.getInstance().changeScene("menu");
@@ -83,8 +83,6 @@ class Main extends Engine
 		//this.addChild(hero);
 		
 		InputManager.getInstance().suscribe(stage);
-		
-		
 		
 		
 		
@@ -167,5 +165,25 @@ class Main extends Engine
 		//
 	}
 	
+	override function resize() 
+	{
+		
+		super.resize();
+		var ratio:Float = Math.min(HXP.stage.stageWidth / 800, HXP.stage.stageHeight / 600);
+		HXP.screen.scaleX = ratio;
+		HXP.screen.scaleY = ratio;
+		
+		
+		
+		
+		trace(HXP.windowWidth, HXP.screen.width,800*ratio,HXP.width*ratio);
+		HXP.screen.x= -Std.int((800*ratio - HXP.windowWidth)/2);
+		HXP.screen.y = -Std.int((600*ratio- HXP.windowHeight)/2);
+		HXP.resize(HXP.stage.stageWidth, HXP.stage.stageHeight);
+		
+		if (!inited) init();
+	
+		
+	}
 	
 }

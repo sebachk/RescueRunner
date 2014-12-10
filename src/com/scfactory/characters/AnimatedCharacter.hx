@@ -91,7 +91,9 @@ class AnimatedCharacter extends Entity
 		
 		state.actual = EstadoCharacter.ESTADO_MUERTO;
 		//estado = ESTADO_MUERTO;
-		cast(this.scene, LevelScene).MatarCharacter(this);
+		if(lScene!=null)
+			lScene.MatarCharacter(this);
+		//cast(this.scene, LevelScene).MatarCharacter(this);
 		return true;
 		
 		
