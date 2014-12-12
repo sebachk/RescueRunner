@@ -398,9 +398,11 @@ class LevelScene extends GameScene
 		this.add(superficie);
 		
 		if (this.hero == null) {
+
 			
-			this.hero = new Hero("img/runner2.png");
-		}
+			this.hero = new Hero("img/megaman.png");
+
+			}
 		
 		hero.moveTo(50,superficie.y-hero.height-10 );
 		hero.reset();

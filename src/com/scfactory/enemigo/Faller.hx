@@ -23,14 +23,14 @@ class Faller extends Enemigo
 	
 	public function new() 
 	{
-		super("img/faller.png", 150, 261, 150, 261, null);
+		super("img/faller_04.png", 90, 63, 90, 63, null);
 		cayendo = Math.random()>0.5;
 		velocidad = new Point(0, 4);
 		
-		this.anim.scale = 0.2;
-		this.anim.scale = 0.2;
+		//this.anim.scale = 0.2;
+		//this.anim.scale = 0.2;
 		
-		setHitbox(30, 53);
+		setHitbox(90, 63);
 	
 	}
 	

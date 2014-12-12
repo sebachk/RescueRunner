@@ -21,12 +21,13 @@ class Rehen extends AnimatedCharacter
 	
 	public function new(adelante:AnimatedCharacter = null , x:Float = 0, y:Float = 0, graphic:Graphic = null, mask:Mask = null) 
 	{
-		super("img/runner2.png", 40, 51, 40, 51, null, x, y, graphic, mask);
-		this.anim.add("normal", [0, 1, 2, 3, 4, 5, 6, 7, 8],13);
+		super("img/cientifico.png", 44, 51, 44, 51, null, x, y, graphic, mask);
+		
+		this.anim.add("normal", [0, 1, 2, 3, 4, 5, 6, 7, 8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26],13);
 		
 		this.estado = AnimatedCharacter.ESTADO_R_ESPERANDO;
 		this.state.actual = EstadoCharacter.ESTADO_R_EPERANDO;
-		this.setHitbox(40, 50);
+		this.setHitbox(44, 51);
 		this.adelante = adelante;
 		
 		this.x = x;
