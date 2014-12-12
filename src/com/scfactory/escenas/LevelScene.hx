@@ -261,7 +261,7 @@ class LevelScene extends GameScene
 	private function agregarPlat() {
 		var x:Float = conf.x_Actual();
 		
-		if (x != null && ElementManager.get_Instance().platPool.length>0){
+		if (x != -1 && ElementManager.get_Instance().platPool.length>0){
 			if (x < this.camera.x + HXP.width*2 ) {
 				var p:Point = conf.get_Next();
 				
@@ -390,7 +390,7 @@ class LevelScene extends GameScene
 		ElementManager.get_Instance().reset();
 		if (this.hero == null) {
 			trace("new heroe");
-			this.hero = new Hero("img/runner2.png");
+			this.hero = new Hero("img/megaman.png");
 		}
 		
 		hero.moveTo(50, 50);

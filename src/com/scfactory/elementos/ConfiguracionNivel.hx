@@ -30,7 +30,7 @@ class ConfiguracionNivel
 	public function x_Actual():Float {
 		if(n_plataforma<pos_plataformas.length)
 			return pos_plataformas.slice(n_plataforma, n_plataforma + 1).pop().x+offset;
-		return null;
+		return -1;
 	}
 	
 	public function get_Next():Point {
