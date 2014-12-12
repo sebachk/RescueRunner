@@ -4,7 +4,11 @@ import com.haxepunk.graphics.TiledSpritemap;
 import com.scfactory.characters.AnimatedCharacter;
 import com.scfactory.const.ConstantManager;
 import com.scfactory.elementos.ElementManager;
-import openfl.geom.Point;
+#if html5 
+	import openfl.geom.Point;
+#else
+	import openfl.geom.Point;
+#end
 
 /**
  * ...

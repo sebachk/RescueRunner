@@ -28,7 +28,7 @@ import com.scfactory.persistencia.Persistencia;
 import com.scfactory.persistencia.Score;
 import com.tvj.InputManager;
 import motion.Actuate;
-import openfl._v2.geom.Point;
+import openfl.geom.Point;
 import openfl.text.TextFormatAlign;
 
 /**
@@ -261,7 +261,7 @@ class LevelScene extends GameScene
 	private function agregarPlat() {
 		var x:Float = conf.x_Actual();
 		
-		if (x != null && ElementManager.get_Instance().platPool.length>0){
+		if (x != -1 && ElementManager.get_Instance().platPool.length>0){
 			if (x < this.camera.x + HXP.width*2 ) {
 				var p:Point = conf.get_Next();
 				
@@ -388,17 +388,6 @@ class LevelScene extends GameScene
 		rehenesSalvados = 0;
 		countCapsula = 0;
 		ElementManager.get_Instance().reset();
-		if (this.hero == null) {
-			trace("new heroe");
-			this.hero = new Hero("img/runner2.png");
-		}
-		
-		hero.moveTo(50, 50);
-		hero.reset();
-		
-		this.add(hero);
-		this.characters.push(hero);
-		
 		if(superficie==null){
 			superficie = new Superficie(200, 555, null,null,"floor");
 			superficie.hero = hero;
@@ -407,6 +396,19 @@ class LevelScene extends GameScene
 			superficie.reset(200, 555);
 		}
 		this.add(superficie);
+		
+		if (this.hero == null) {
+			
+			this.hero = new Hero("img/runner2.png");
+		}
+		
+		hero.moveTo(50,superficie.y-hero.height-10 );
+		hero.reset();
+		
+		this.add(hero);
+		this.characters.push(hero);
+		
+		
 		
 		conf.resetPosiciones(0);
 		
