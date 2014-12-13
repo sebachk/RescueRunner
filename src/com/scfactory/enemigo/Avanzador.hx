@@ -1,5 +1,6 @@
 package com.scfactory.enemigo;
 import com.haxepunk.Entity;
+import com.haxepunk.masks.Hitbox;
 import com.scfactory.characters.AnimatedCharacter;
 import com.scfactory.const.ConstantManager;
 import com.scfactory.escenas.LevelScene;
@@ -25,7 +26,7 @@ class Avanzador extends Enemigo
 		velocidad.x = 1;
 		velocidad.y = 9;
 		avanza = false;
-		//setHitbox(30, 40);
+		
 		setHitbox(58, 57);
 		sprite = new Spritemap("img/enemigo_saltar.png", 58, 57);
         //avanza = true;

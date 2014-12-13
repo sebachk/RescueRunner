@@ -18,7 +18,7 @@ class Plataforma extends Entity
 
 	public var hero:Hero;
 	
-	public function new(x:Float=0, y:Float=0, graphic:Graphic=null, mask:Mask=null,tipo:String=ConstantManager.TIPO_PISO) 
+	public function new(x:Float=0, y:Float=0, graphic:Graphic=null, mask:Hitbox=null,tipo:String=ConstantManager.TIPO_PISO) 
 	{
 		
 		super(x, y, graphic,mask);
@@ -28,6 +28,7 @@ class Plataforma extends Entity
 		}
 		this.type = tipo;
 		
+		
 	}
 	
 	override public function update():Void 
@@ -35,7 +36,7 @@ class Plataforma extends Entity
 		super.update();
 		if(type==ConstantManager.TIPO_PISO)
 			if (this.x + this.width < this._camera.x) {
-				
+				trace("remove");
 				ElementManager.get_Instance().removerPlataforma(this);
 		}
 		

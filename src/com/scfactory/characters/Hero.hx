@@ -30,16 +30,16 @@ class Hero extends AnimatedCharacter
 	public function new(anim:TileType,x:Float=0, y:Float=0, graphic:Graphic=null, mask:Mask=null) 
 	{
 		super(anim,50,50,50,50,null,x, y, graphic, mask);
-		this.anim.add("normal", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],13);
+		this.anim.add("normal", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],20);
 		
-		
+		//this.mask = new Hitbox(50, 50);
 		this.setHitbox(50, 50);
 		
 		//this.graphic = this.anim;
 		
-		
 		this.type = "solid";
 		reset();
+		
 	}
 	
 	
@@ -132,6 +132,7 @@ class Hero extends AnimatedCharacter
 	override public function moveCollideY(e:Entity):Bool 
 	{
 		//if (ret)
+		
 		if (e.type == ConstantManager.TIPO_CAPSULA) {
 			this.lScene.salvarRehenes(cast(e, Capsula));
 			trace("Collision con Capsula en Y");

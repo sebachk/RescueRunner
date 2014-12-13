@@ -3,6 +3,7 @@ package com.scfactory.characters;
 import com.haxepunk.Entity;
 import com.haxepunk.Graphic;
 import com.haxepunk.Mask;
+import com.haxepunk.masks.Hitbox;
 import com.scfactory.const.ConstantManager;
 import com.scfactory.estados.EstadoCharacter;
 import openfl.Vector;
@@ -23,11 +24,12 @@ class Rehen extends AnimatedCharacter
 	{
 		super("img/cientifico.png", 44, 51, 44, 51, null, x, y, graphic, mask);
 		
-		this.anim.add("normal", [0, 1, 2, 3, 4, 5, 6, 7, 8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26],13);
+		this.anim.add("normal", [0, 1, 2, 3, 4, 5, 6, 7, 8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26],20);
 		
 		this.estado = AnimatedCharacter.ESTADO_R_ESPERANDO;
 		this.state.actual = EstadoCharacter.ESTADO_R_EPERANDO;
 		this.setHitbox(44, 51);
+		
 		this.adelante = adelante;
 		
 		this.x = x;

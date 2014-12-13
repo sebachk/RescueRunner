@@ -4,6 +4,7 @@ import com.haxepunk.Entity;
 import com.haxepunk.Graphic;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.Mask;
+import com.haxepunk.masks.Hitbox;
 import com.scfactory.const.ConstantManager;
 
 /**
@@ -19,6 +20,7 @@ class Capsula extends Entity
 		this.graphic = new Image("img/escena/capsula.png");
 		trace("new Capsula:" + width + " " + height);
 		setHitbox(50,50);
+		
 		this.type = ConstantManager.TIPO_CAPSULA;
 	}
 	

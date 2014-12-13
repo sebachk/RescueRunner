@@ -1,6 +1,7 @@
 package com.scfactory.enemigo;
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.TiledSpritemap;
+import com.haxepunk.masks.Hitbox;
 import com.scfactory.characters.AnimatedCharacter;
 import com.scfactory.const.ConstantManager;
 import com.scfactory.elementos.ElementManager;
@@ -23,15 +24,16 @@ class Faller extends Enemigo
 	
 	public function new() 
 	{
-		super("img/faller_04.png", 90, 63, 90, 63, null);
+		super("img/faller_vert.png", 90, 63, 90, 63, null);
 		cayendo = Math.random()>0.5;
 		velocidad = new Point(0, 4);
-		
+		anim.add("fly", [0, 1, 2, 3, 4, 5, 6, 7], 30);
+		anim.add("fall", [2]);
 		//this.anim.scale = 0.2;
 		//this.anim.scale = 0.2;
 		
-		setHitbox(90, 63);
-	
+		setHitbox(70, 63,10);
+		
 	}
 	
 	override public function update():Void 
@@ -42,6 +44,10 @@ class Faller extends Enemigo
 		
 		if (!cayendo) {
 			mov = -mov;
+			anim.play("fly");
+		}
+		else {
+			anim.play("fall");
 		}
 		
 		moveBy(0, mov, [ConstantManager.TIPO_FLOOR,ConstantManager.TIPO_CHARACTER,ConstantManager.TIPO_PISO]);
@@ -55,7 +61,16 @@ class Faller extends Enemigo
 		
 
 	}
-	
+	override function animar() 
+	{
+		if (!cayendo) {
+			
+			anim.play("fly");
+		}
+		else {
+			anim.play("fall");
+		}
+	}
 	
 	override public function moveCollideY(e:Entity):Bool 
 	{

@@ -28,10 +28,11 @@ class Cortina extends Entity
 	
 	public function onEnter(){
 		Actuate.tween(image, 1, { alpha:1 } ).onComplete(entered);
-	}
+		trace("cortina enter");
+		}
 	
-	public function onExit(){
-		trace("cortina exited");
+	public function onExit() {
+		
 		Actuate.tween(image, 1, { alpha:0 } ).onComplete(exited);
 	}
 	

@@ -3,6 +3,7 @@ import com.haxepunk.Graphic;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.HXP;
 import com.haxepunk.Mask;
+import com.haxepunk.masks.Hitbox;
 import com.haxepunk.math.Vector;
 import com.haxepunk.utils.Data;
 import com.haxepunk.utils.Draw;
@@ -36,8 +37,9 @@ class Superficie extends Plataforma
 		for (i in 0...cant) {
 			var nuevo:Float = y;
 			
-			p = new Plataforma((i-1) * imagen.width+x, nuevo-20, this.imagen, mask, this.type);
+			p = new Plataforma((i-1) * imagen.width+x, nuevo-20, this.imagen, null, this.type);
 			p.setHitbox(imagen.width, imagen.height-10,0,-10);
+			
 			//this.addGraphic(p.graphic);
 			plataformas.push(p);
 			

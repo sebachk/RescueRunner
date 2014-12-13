@@ -1,5 +1,6 @@
 package com.scfactory.escenas;
 
+import com.haxepunk.Entity;
 import com.haxepunk.Graphic.ImageType;
 import com.haxepunk.graphics.Backdrop;
 import com.haxepunk.graphics.Image;
@@ -145,6 +146,8 @@ class LevelScene extends GameScene
 	
 	function exit(_) {
 		SceneManager.getInstance().changeScene("menu");
+		
+		
 	}
 	
 	private function loadPlataformas() {
@@ -153,22 +156,22 @@ class LevelScene extends GameScene
 		conf.add_plataforma(700, 450);
 		conf.add_plataforma(1200, 350);
 		conf.add_plataforma(1700, 250);
-		conf.add_plataforma(2600, 350);
-		conf.add_plataforma(2700, 150);
+		conf.add_plataforma(2500, 350);
+		conf.add_plataforma(2900, 150);
 		conf.add_plataforma(3300, 450);
 		conf.add_plataforma(3600, 350);
-		conf.add_plataforma(4000, 450);
+		conf.add_plataforma(4000, 250);
 		conf.add_plataforma(4700, 450);
 		conf.add_plataforma(5500, 350);
 		conf.add_plataforma(6000, 350);
 		conf.add_plataforma(6000, 250);
 		conf.add_plataforma(6500, 250);
 		conf.add_plataforma(7500, 150);
-		conf.add_plataforma(7500, 450);
+		conf.add_plataforma(7500, 350);
 		conf.add_plataforma(8000, 250);
 		conf.add_plataforma(8000, 450);
 		conf.add_plataforma(8400, 350);
-		conf.add_plataforma(8900, 350);
+		conf.add_plataforma(8700, 350);
 	}
 	
 	public function set_hero(hero:Hero):Hero {
@@ -243,18 +246,22 @@ class LevelScene extends GameScene
 		}
 	}
 	
+	
+	
 	private function agregarRehen():Bool {
 		var r:Rehen = ElementManager.get_Instance().getRehen();
 		if (r!=null) {
 			r.x = HXP.camera.x + HXP.width +300;
-			r.y = Math.random() * HXP.height * 0.75;
-			this.add(r);
+			r.y = 30;
 			
 			ElementManager.get_Instance().corregiPosicion(r);
+			
+			this.add(r);
+			
 			return true;
 		}
 		else {
-		return false;
+			return false;
 		}
 	}
 	
@@ -262,7 +269,7 @@ class LevelScene extends GameScene
 		var x:Float = conf.x_Actual();
 		
 		if (x != -1 && ElementManager.get_Instance().platPool.length>0){
-			if (x < this.camera.x + HXP.width*2 ) {
+			if (x < this.camera.x + HXP.width*2+100 ) {
 				var p:Point = conf.get_Next();
 				
 				this.add(ElementManager.get_Instance().usePlataforma(p.x, p.y));
@@ -314,6 +321,7 @@ class LevelScene extends GameScene
 			trace(bExit.container);
 			
 			
+			
 		}
 		else {
 			var i:Int = characters.indexOf(ch);
@@ -355,8 +363,6 @@ class LevelScene extends GameScene
 		this.sprite.scaleX = 1;
 		this.sprite.scaleY = 1;
 		
-		
-		ElementManager.get_Instance().reset();
 		this.removeAll();
 		
 		while (characters.length > 0) {
@@ -393,7 +399,7 @@ class LevelScene extends GameScene
 			superficie.hero = hero;
 		}
 		else {
-			superficie.reset(200, 555);
+			superficie.reset(20, 555);
 		}
 		this.add(superficie);
 		
@@ -451,7 +457,7 @@ class LevelScene extends GameScene
 		localScore.text += final + "";
 		
 		
-		
+		//ElementManager.get_Instance().reset();
 		
 		
 	}

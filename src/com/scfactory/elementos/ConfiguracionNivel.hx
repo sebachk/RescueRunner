@@ -12,6 +12,8 @@ class ConfiguracionNivel
 	
 	var offset:Float;
 	
+	var i:Int = 0;
+	
 	public function new() 
 	{
 		pos_plataformas = new Array<Point>();
@@ -38,11 +40,10 @@ class ConfiguracionNivel
 			n_plataforma++;
 			var p:Point = pos_plataformas.slice(n_plataforma - 1, n_plataforma).pop();
 		
-			
-			
+				
+			//trace("plat numero:" + i, "cant:"+pos_plataformas.length,"offset:"+n_plataforma);
 			return new Point(p.x+offset,p.y);
 		}
-		
 		return null;
 	}
 	

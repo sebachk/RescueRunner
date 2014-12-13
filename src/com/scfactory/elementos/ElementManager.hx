@@ -67,7 +67,9 @@ class ElementManager
 		platPool = new Array<Plataforma>();
 		platUsadas = new Array<Plataforma>();
 		for (i in 0...7) {
-			platPool.push( new Plataforma(0, 0, graph, new Hitbox(graph.width,graph.height-5,0,5), ConstantManager.TIPO_PISO));
+			var p:Plataforma = new Plataforma(0, 0, graph, new Hitbox(graph.width, graph.height - 5, 0, 5), ConstantManager.TIPO_PISO);
+			p.setHitbox(graph.width, graph.height - 5, 0, 5);
+			platPool.push( p);
 			
 		}
 		
@@ -112,9 +114,6 @@ class ElementManager
 		
 		loadRehenes();
 		
-		inicCapsula = 60;
-		inicEnemigo = 6;
-		inicRehen = 4;
 		
 		resetContadores();
 		
@@ -127,6 +126,10 @@ class ElementManager
 		intervaloEnemigo = inicEnemigo;
 		intervaloRehen = inicRehen;
 		velocidadCamara = 2;
+		inicCapsula = 60;
+		inicEnemigo = 6;
+		inicRehen = 4;
+		dificultad = 30;
 	}
 	
 	////////////////ENEMIGOS///////////////////////////
@@ -180,17 +183,15 @@ class ElementManager
 	
 	public function reset() {
 		
-		while (platUsadas.length > 0) {
-			platPool.push(platUsadas.pop());
-		}
+		for (plat in platUsadas)
+			this.removerPlataforma(plat);
 		
-		while (enemigosEnEscena.length > 0) {
-			fallerPool.push(enemigosEnEscena.pop());
-		}
+		for (en in enemigosEnEscena)
+			killFaller(en);
 		
-		while (rehenesEnEscena.length > 0) {
-			poolRehenes.push(rehenesEnEscena.pop());
-		}
+		for (rehen in rehenesEnEscena)
+			this.removeRehen(rehen);
+		
 		
 		resetContadores();
 	}
@@ -198,15 +199,17 @@ class ElementManager
 	
 	public function corregiPosicion(e:Entity) {
 		for (plat in platUsadas) {
-			if (e.collideWith(plat, e.x, e.y)!=null) {
-				if (e.y + e.height < plat.y + plat.halfHeight) {
-					e.y = plat.y - e.height - 1;
-				}
-				else {
+			if (plat.collideWith(e, plat.x, e.y)!=null) {
+				if (Math.random() > 0.5) {
 					e.y = plat.y + plat.height + 1;
 				}
-				trace("CORRIGIENDO");
-				return;
+				else {
+					e.y = plat.y - e.height - 2;
+				}
+				if (plat.collideWith(e, plat.x, e.y)!=null) {
+					
+					
+				}
 			}
 		}
 	}
